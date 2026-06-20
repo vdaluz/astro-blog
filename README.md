@@ -6,14 +6,20 @@ Shared Astro blog building blocks for vdaluz.com-family sites: token-driven comp
 
 ## Install
 
-Git dependency (no registry needed):
+Pinned https tarball from a tag (no registry needed):
 
 ```jsonc
 // package.json
 "dependencies": {
-  "@vdaluz/astro-blog": "github:vdaluz/astro-blog#v0.1.0"
+  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.1.0.tar.gz"
 }
 ```
+
+> **Why a tarball, not `github:vdaluz/astro-blog#v0.1.0`?** npm canonicalizes GitHub
+> shorthand (and even an explicit `git+https://` URL) to `git+ssh://` in the lockfile.
+> CI runners (e.g. Cloudflare Pages/Workers) have no SSH key, so `npm ci` would fail to
+> clone it. The `/archive/refs/tags/<tag>.tar.gz` URL is anonymous https with an integrity
+> hash in the lockfile — it just works in CI. Bump the tag in the URL to upgrade.
 
 Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwindcss/typography` in the app.
 
