@@ -1,0 +1,23 @@
+{
+  "name": "@vdaluz/astro-blog",
+  "version": "0.1.0",
+  "description": "Shared Astro blog components, related-posts scoring, schema factory, and Shiki config for vdaluz.com-family sites.",
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./shiki": "./src/lib/shiki.ts",
+    "./PostCard.astro": "./src/components/PostCard.astro",
+    "./RelatedPosts.astro": "./src/components/RelatedPosts.astro",
+    "./Pagination.astro": "./src/components/Pagination.astro",
+    "./Subheading.astro": "./src/components/Subheading.astro",
+    "./BlogPostMeta.astro": "./src/components/BlogPostMeta.astro",
+    "./styles/tokens.example.css": "./src/styles/tokens.example.css"
+  },
+  "peerDependencies": {
+    "astro": ">=6.0.0"
+  }
+}

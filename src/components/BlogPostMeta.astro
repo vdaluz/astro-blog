@@ -1,0 +1,20 @@
+---
+import { buildBlogPostingSchema } from '../lib/schema';
+import type { BlogPostLike } from '../lib/types';
+
+interface Props {
+  post: BlogPostLike;
+  /** Origin only, e.g. "https://imperfectsystems.com". */
+  siteUrl: string;
+  /** Route prefix posts live under. Defaults to "/blog". */
+  basePath?: string;
+  /** Site/brand name for JSON-LD publisher. Falls back to the post author. */
+  publisherName?: string;
+}
+
+const { post, siteUrl, basePath = '/blog', publisherName } = Astro.props;
+const schema = buildBlogPostingSchema({ post, siteUrl, basePath, publisherName });
+---
+
+{/* JSON-LD is valid in <body>; render this anywhere inside the post page. */}
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

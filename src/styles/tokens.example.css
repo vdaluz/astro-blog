@@ -1,0 +1,71 @@
+/* ============================================================
+   @vdaluz/astro-blog — token contract
+   ------------------------------------------------------------
+   The package components reference ONLY these token names (never
+   hard-coded colors). Each consuming site must define them. Values
+   are R G B channel triplets so Tailwind's
+   `rgb(var(--name) / <alpha-value>)` pipeline works.
+
+   Copy this file into your app (e.g. src/styles/theme.css), keep the
+   variable NAMES, and replace the VALUES with your palette.
+
+   Your tailwind.config.mjs must alias these names — see README.
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  --bg: 250 250 250; /* page background */
+  --surface: 255 255 255; /* card / panel surface (should read as elevated vs --bg) */
+  --surface-muted: 218 219 225; /* tag pill, dimmed card, hover */
+
+  --fg: 52 59 89; /* primary text */
+  --muted: 92 94 110; /* secondary text, dates (keep >= 4.5:1 on --bg) */
+
+  --border: 220 222 230; /* dividers, input borders */
+
+  --accent: 41 89 170; /* links, category labels */
+  --accent-strong: 27 70 145; /* link hover / active */
+  --accent-soft: 230 234 245; /* tinted bg behind accents (blockquote, pill) */
+  --on-accent: 255 255 255; /* text on a solid --accent background */
+}
+
+/* Dark theme. Sites with a light/dark toggle override under `.dark`.
+   Dark-only sites: force `<html class="dark">` and only this block applies. */
+.dark {
+  color-scheme: dark;
+
+  --bg: 26 27 38;
+  --surface: 36 37 52;
+  --surface-muted: 50 54 79;
+
+  --fg: 169 177 214;
+  --muted: 154 160 189;
+
+  --border: 54 59 84;
+
+  --accent: 122 162 247;
+  --accent-strong: 125 207 255;
+  --accent-soft: 41 47 73;
+  --on-accent: 26 27 38;
+}
+
+/* ============================================================
+   Shiki dual-theme handoff (REQUIRED for code blocks)
+   Pairs with `shikiConfig` (defaultColor: false) from the package.
+   Shiki sets --shiki-light/--shiki-dark inline on <pre> and token
+   <span>s; these rules pick one based on the `.dark` class on <html>.
+   Ship this together with the config or code blocks lose color.
+   ============================================================ */
+html pre {
+  background-color: var(--shiki-light-bg);
+}
+html pre code span {
+  color: var(--shiki-light);
+}
+html.dark pre {
+  background-color: var(--shiki-dark-bg);
+}
+html.dark pre code span {
+  color: var(--shiki-dark);
+}

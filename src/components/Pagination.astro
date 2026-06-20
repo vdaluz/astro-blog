@@ -1,0 +1,155 @@
+---
+interface Props {
+  page: {
+    currentPage: number;
+    lastPage: number;
+    url: {
+      prev?: string;
+      next?: string;
+      first?: string;
+      last?: string;
+    };
+  };
+  /** Route prefix posts live under. Defaults to "/blog". */
+  base?: string;
+}
+
+const { page, base = '/blog' } = Astro.props;
+const { currentPage, lastPage, url } = page;
+
+const getPageNumbers = () => {
+  const pages = [];
+  const maxVisible = 5;
+
+  if (lastPage <= maxVisible) {
+    for (let i = 1; i <= lastPage; i++) {
+      pages.push(i);
+    }
+  } else {
+    let start = Math.max(1, currentPage - 2);
+    let end = Math.min(lastPage, start + maxVisible - 1);
+
+    if (end === lastPage) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+  }
+
+  return pages;
+};
+
+const pageNumbers = getPageNumbers();
+const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
+---
+
+<nav class="flex items-center justify-center space-x-2 mt-12" aria-label="Blog pagination">
+  {
+    url.first ? (
+      <a
+        href={url.first}
+        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        aria-label="Go to first page"
+      >
+        &laquo;
+      </a>
+    ) : (
+      <span
+        role="button"
+        aria-disabled="true"
+        aria-label="Go to first page"
+        class="px-3 py-2 text-border cursor-not-allowed"
+      >
+        &laquo;
+      </span>
+    )
+  }
+
+  {
+    url.prev ? (
+      <a
+        href={url.prev}
+        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        aria-label="Go to previous page"
+      >
+        &lsaquo;
+      </a>
+    ) : (
+      <span
+        role="button"
+        aria-disabled="true"
+        aria-label="Go to previous page"
+        class="px-3 py-2 text-border cursor-not-allowed"
+      >
+        &lsaquo;
+      </span>
+    )
+  }
+
+  {
+    pageNumbers.map((pageNum) =>
+      pageNum === currentPage ? (
+        <span class="px-3 py-2 bg-accent text-on-accent rounded-lg font-medium" aria-current="page">
+          {pageNum}
+        </span>
+      ) : (
+        <a
+          href={pageHref(pageNum)}
+          class="px-3 py-2 text-muted hover:text-accent transition-colors rounded-lg hover:bg-surface-muted"
+        >
+          {pageNum}
+        </a>
+      )
+    )
+  }
+
+  {
+    url.next ? (
+      <a
+        href={url.next}
+        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        aria-label="Go to next page"
+      >
+        &rsaquo;
+      </a>
+    ) : (
+      <span
+        role="button"
+        aria-disabled="true"
+        aria-label="Go to next page"
+        class="px-3 py-2 text-border cursor-not-allowed"
+      >
+        &rsaquo;
+      </span>
+    )
+  }
+
+  {
+    url.last ? (
+      <a
+        href={url.last}
+        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        aria-label="Go to last page"
+      >
+        &raquo;
+      </a>
+    ) : (
+      <span
+        role="button"
+        aria-disabled="true"
+        aria-label="Go to last page"
+        class="px-3 py-2 text-border cursor-not-allowed"
+      >
+        &raquo;
+      </span>
+    )
+  }
+</nav>
+
+<div class="text-center text-muted mt-4">
+  <p class="text-sm">
+    Page {currentPage} of {lastPage}
+  </p>
+</div>

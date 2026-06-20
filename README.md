@@ -1,0 +1,101 @@
+# @vdaluz/astro-blog
+
+Shared Astro blog building blocks for vdaluz.com-family sites: token-driven components, related-posts scoring, a schema factory, and Shiki config. Ships raw `.astro` and `.ts` — the consuming app's Astro/Vite compiles them (no prebuild step).
+
+> **Scope:** this is a component library, not a drop-in blog. Routes (`src/pages/blog/*`) and content (`src/content/blog/*.md`) stay in each app — see [Per-app glue](#per-app-glue).
+
+## Install
+
+Git dependency (no registry needed):
+
+```jsonc
+// package.json
+"dependencies": {
+  "@vdaluz/astro-blog": "github:vdaluz/astro-blog#v0.1.0"
+}
+```
+
+Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwindcss/typography` in the app.
+
+## Three things every consumer MUST do
+
+1. **Define the token CSS variables.** Components reference only these names:
+   `bg`, `surface`, `surface-muted`, `fg`, `muted`, `border`, `accent`, `accent-strong`, `accent-soft`, `on-accent`.
+   Copy `src/styles/tokens.example.css` into your app and set your palette.
+
+2. **Alias the tokens in `tailwind.config.mjs` AND scan the package** (this glob is the #1 thing people forget — without it the package's utility classes are never generated):
+
+   ```js
+   export default {
+     content: [
+       './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+       './node_modules/@vdaluz/astro-blog/**/*.{astro,ts}', // <-- required
+     ],
+     theme: {
+       extend: {
+         colors: {
+           bg: 'rgb(var(--bg) / <alpha-value>)',
+           surface: 'rgb(var(--surface) / <alpha-value>)',
+           'surface-muted': 'rgb(var(--surface-muted) / <alpha-value>)',
+           fg: 'rgb(var(--fg) / <alpha-value>)',
+           muted: 'rgb(var(--muted) / <alpha-value>)',
+           border: 'rgb(var(--border) / <alpha-value>)',
+           accent: 'rgb(var(--accent) / <alpha-value>)',
+           'accent-strong': 'rgb(var(--accent-strong) / <alpha-value>)',
+           'accent-soft': 'rgb(var(--accent-soft) / <alpha-value>)',
+           'on-accent': 'rgb(var(--on-accent) / <alpha-value>)',
+         },
+       },
+     },
+     plugins: [require('@tailwindcss/typography')],
+   };
+   ```
+
+3. **Wire Shiki** in `astro.config.mjs` and ship the matching CSS handoff (included in `tokens.example.css`):
+
+   ```js
+   import { shikiConfig } from '@vdaluz/astro-blog';
+   export default defineConfig({ markdown: { shikiConfig } });
+   ```
+
+   The `shikiConfig` uses `defaultColor: false`, so the CSS handoff is what actually colors code blocks. They must ship together. **Dark-only sites:** keep `shikiConfig` and force `<html class="dark">` so the dark vars always apply.
+
+## Exports
+
+| Import | What |
+| --- | --- |
+| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `shikiConfig`, types |
+| `@vdaluz/astro-blog/PostCard.astro` | Post card for listings |
+| `@vdaluz/astro-blog/RelatedPosts.astro` | Related-posts grid |
+| `@vdaluz/astro-blog/Pagination.astro` | Paginated listing nav |
+| `@vdaluz/astro-blog/Subheading.astro` | Small uppercase section label |
+| `@vdaluz/astro-blog/BlogPostMeta.astro` | JSON-LD BlogPosting `<script>` |
+
+Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accept an optional `base` prop (default `/blog`).
+
+## Per-app glue
+
+Each site keeps these — they can't be packaged because they bind to the app's own collection and routes.
+
+`src/content.config.ts`:
+
+```ts
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { blogSchema } from '@vdaluz/astro-blog';
+
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: blogSchema({ defaultAuthor: 'Your Name' }),
+});
+export const collections = { blog };
+```
+
+`src/pages/blog/[...page].astro` and `[...slug].astro`: do `getCollection` / `getStaticPaths` / `render()` in-app (tied to your collection), then render the package components. Keep `export const prerender = true`. Site-specific headings and CTAs live here.
+
+Related posts:
+
+```ts
+import { scoreRelated } from '@vdaluz/astro-blog';
+const related = scoreRelated(entry, allPosts, { k: 3, aliases: { ha: 'home-assistant' } });
+```
