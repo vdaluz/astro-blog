@@ -9,15 +9,17 @@ interface Props {
 
 const { post, base = '/blog' } = Astro.props;
 const href = `${base}/${post.id}`;
+// Consumers must generate a matching .webp for every heroImage (see README).
+const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
 ---
 
 <article
   class="bg-surface rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
 >
   {
-    post.data.heroImage && (
+    heroImageWebp && (
       <a href={href}>
-        <img src={post.data.heroImage} alt={post.data.title} class="w-full h-48 object-cover" />
+        <img src={heroImageWebp} alt={post.data.title} class="w-full h-48 object-cover" />
       </a>
     )
   }

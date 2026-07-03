@@ -23,7 +23,7 @@ Pinned https tarball from a tag (no registry needed):
 
 Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwindcss/typography` in the app.
 
-## Three things every consumer MUST do
+## Four things every consumer MUST do
 
 1. **Define the token CSS variables.** Components reference only these names:
    `bg`, `surface`, `surface-muted`, `fg`, `muted`, `border`, `accent`, `accent-strong`, `accent-soft`, `on-accent`.
@@ -65,6 +65,8 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
    ```
 
    The `shikiConfig` uses `defaultColor: false`, so the CSS handoff is what actually colors code blocks. They must ship together. **Dark-only sites:** keep `shikiConfig` and force `<html class="dark">` so the dark vars always apply.
+
+4. **Generate a matching `.webp` sibling for every `heroImage`.** `PostCard` and `RelatedPosts` derive the thumbnail `src` by swapping the `heroImage` extension (`.jpg`/`.jpeg`/`.png`/`.gif`) for `.webp` — they never render the raw file. If a post sets `heroImage: /assets/images/foo.jpeg`, `assets/images/foo.webp` must exist at that same path or the thumbnail 404s. Any image pipeline that outputs a same-basename `.webp` next to the original works (e.g. a Sharp-based build step); nothing in this package generates it for you.
 
 ## Exports
 

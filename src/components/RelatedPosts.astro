@@ -8,6 +8,8 @@ interface Props {
 }
 
 const { posts, base = '/blog' } = Astro.props;
+// Consumers must generate a matching .webp for every heroImage (see README).
+const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
 ---
 
 <section aria-label="Related reading" class="mt-16 pt-8 border-t border-border">
@@ -16,10 +18,10 @@ const { posts, base = '/blog' } = Astro.props;
     {
       posts.map((post) => (
         <article class="bg-surface rounded-xl shadow overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
-          {post.data.heroImage && (
+          {heroImageWebp(post.data.heroImage) && (
             <a href={`${base}/${post.id}`}>
               <img
-                src={post.data.heroImage}
+                src={heroImageWebp(post.data.heroImage)}
                 alt={post.data.title}
                 class="w-full h-40 object-cover"
               />
