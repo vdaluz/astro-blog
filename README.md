@@ -11,7 +11,7 @@ Pinned https tarball from a tag (no registry needed):
 ```jsonc
 // package.json
 "dependencies": {
-  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.1.0.tar.gz"
+  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.2.0.tar.gz"
 }
 ```
 
@@ -72,7 +72,7 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 
 | Import | What |
 | --- | --- |
-| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `shikiConfig`, types |
+| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `shikiConfig`, `buildRssItems`, types |
 | `@vdaluz/astro-blog/PostCard.astro` | Post card for listings |
 | `@vdaluz/astro-blog/RelatedPosts.astro` | Related-posts grid |
 | `@vdaluz/astro-blog/Pagination.astro` | Paginated listing nav |
@@ -106,4 +106,29 @@ Related posts:
 ```ts
 import { scoreRelated } from '@vdaluz/astro-blog';
 const related = scoreRelated(entry, allPosts, { k: 3, aliases: { ha: 'home-assistant' } });
+```
+
+RSS feed (`src/pages/rss.xml.ts`, needs the app's own `@astrojs/rss` dependency — this package doesn't ship it):
+
+```ts
+import rss from '@astrojs/rss';
+import type { APIRoute } from 'astro';
+import { getCollection } from 'astro:content';
+import { buildRssItems } from '@vdaluz/astro-blog';
+
+export const prerender = true;
+
+export const GET: APIRoute = async (context) => {
+  const now = new Date();
+  const posts = (await getCollection('blog'))
+    .filter((p) => p.data.pubDate <= now)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+  return rss({
+    title: 'Your Site — Blog',
+    description: 'Your site description',
+    site: context.site!,
+    items: buildRssItems(posts),
+  });
+};
 ```
