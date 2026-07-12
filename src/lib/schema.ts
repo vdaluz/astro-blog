@@ -24,6 +24,15 @@ export function blogSchema(opts: { defaultAuthor?: string } = {}) {
     author: z.string().default(opts.defaultAuthor ?? ''),
     tags: z.array(z.string()).optional(),
     heroImage: z.string().optional(),
+    heroImageCredit: z
+      .object({
+        name: z.string(),
+        url: z.string().url(),
+        source: z.enum(['pexels', 'unsplash', 'openverse']),
+        licenseName: z.string().optional(),
+        licenseUrl: z.string().url().optional(),
+      })
+      .optional(),
     /** Affiliate program keys used by this post, e.g. ["amazon"]. See @vdaluz/astro-affiliate. */
     affiliates: z.array(z.string()).optional(),
   });
