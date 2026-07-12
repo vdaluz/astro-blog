@@ -20,12 +20,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Release process
 
-Tag-pinned tarballs, no registry:
-
-1. Test before tagging: `npm pack`, install the tarball into a scratch Astro app (or one of the consumers locally), `astro check && astro build`.
-2. Bump `version` in `package.json`, commit.
-3. Tag `vX.Y.Z` and push the tag. **The tag must be public before any consumer CI references it** - the tarball URL 404s otherwise.
-4. Bump the tag in each consumer's `package.json` dependency URL (`https://github.com/vdaluz/astro-blog/archive/refs/tags/vX.Y.Z.tar.gz` - tarball, not `github:`, because npm rewrites shorthand to `git+ssh`, which fails in CI without SSH keys).
+Same tag-pinned-tarball process shared by all `@vdaluz/*` component libraries — see root
+`~/Repos/CLAUDE.md` → "Astro shared-library release process".
 
 ## Consumers
 
