@@ -1,19 +1,23 @@
 ---
 import type { BlogPostLike } from '../lib/types';
+import { t, formatDate, type Locale } from '../lib/i18n';
 
 interface Props {
   posts: BlogPostLike[];
   /** Route prefix posts live under. Defaults to "/blog". */
   base?: string;
+  /** Locale for date formatting and UI strings. Defaults to "en". */
+  locale?: Locale;
 }
 
-const { posts, base = '/blog' } = Astro.props;
+const { posts, base = '/blog', locale = 'en' } = Astro.props;
+const strings = t(locale);
 // Consumers must generate a matching .webp for every heroImage (see README).
 const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
 ---
 
-<section aria-label="Related reading" class="mt-16 pt-8 border-t border-border">
-  <h2 class="text-2xl font-bold text-fg mb-8">Related reading</h2>
+<section aria-label={strings.relatedReading} class="mt-16 pt-8 border-t border-border">
+  <h2 class="text-2xl font-bold text-fg mb-8">{strings.relatedReading}</h2>
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {
       posts.map((post) => (
@@ -39,18 +43,14 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
             </p>
             <div class="flex items-center justify-between mt-auto">
               <time datetime={post.data.pubDate.toISOString()} class="text-xs text-muted">
-                {post.data.pubDate.toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
+                {formatDate(post.data.pubDate, locale, { year: 'numeric', month: 'short', day: 'numeric' })}
               </time>
               <a
                 href={`${base}/${post.id}`}
                 class="inline-flex items-center text-accent text-sm font-semibold hover:text-accent-strong transition-colors group"
-                aria-label={`Read ${post.data.title}`}
+                aria-label={`${strings.read} ${post.data.title}`}
               >
-                Read
+                {strings.read}
                 <svg
                   class="w-3 h-3 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
                   viewBox="0 0 20 20"

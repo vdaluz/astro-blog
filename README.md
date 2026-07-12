@@ -72,7 +72,7 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 
 | Import | What |
 | --- | --- |
-| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `shikiConfig`, `buildRssItems`, types |
+| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `shikiConfig`, `buildRssItems`, `t`, `formatDate`, types |
 | `@vdaluz/astro-blog/PostCard.astro` | Post card for listings |
 | `@vdaluz/astro-blog/RelatedPosts.astro` | Related-posts grid |
 | `@vdaluz/astro-blog/Pagination.astro` | Paginated listing nav |
@@ -80,6 +80,8 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 | `@vdaluz/astro-blog/BlogPostMeta.astro` | JSON-LD BlogPosting `<script>` |
 
 Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accept an optional `base` prop (default `/blog`).
+
+`PostCard`, `RelatedPosts`, `Pagination`, and `BlogPostMeta` accept an optional `locale` prop (`'en' | 'es'`, default `'en'`) that localizes their built-in UI strings (dates, "Read More", pagination labels) and `BlogPostMeta`'s JSON-LD `inLanguage` field. It does not affect the post URLs those components build - a locale-specific `base` still needs passing separately if the consuming app routes translated posts under a different prefix (e.g. `/es/blog`).
 
 ## Per-app glue
 

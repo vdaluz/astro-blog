@@ -6,3 +6,5 @@ export { shikiConfig } from './lib/shiki';
 export { buildRssItems } from './lib/rss';
 export type { RssItem } from './lib/rss';
 export type { BlogPostData, BlogPostLike } from './lib/types';
+export { t, formatDate } from './lib/i18n';
+export type { Locale } from './lib/i18n';

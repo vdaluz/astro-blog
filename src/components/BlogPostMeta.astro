@@ -1,6 +1,7 @@
 ---
 import { buildBlogPostingSchema } from '../lib/schema';
 import type { BlogPostLike } from '../lib/types';
+import type { Locale } from '../lib/i18n';
 
 interface Props {
   post: BlogPostLike;
@@ -10,10 +11,12 @@ interface Props {
   basePath?: string;
   /** Site/brand name for JSON-LD publisher. Falls back to the post author. */
   publisherName?: string;
+  /** Locale for the JSON-LD `inLanguage` field. Omitted if unset. */
+  locale?: Locale;
 }
 
-const { post, siteUrl, basePath = '/blog', publisherName } = Astro.props;
-const schema = buildBlogPostingSchema({ post, siteUrl, basePath, publisherName });
+const { post, siteUrl, basePath = '/blog', publisherName, locale } = Astro.props;
+const schema = buildBlogPostingSchema({ post, siteUrl, basePath, publisherName, locale });
 ---
 
 {/* JSON-LD is valid in <body>; render this anywhere inside the post page. */}

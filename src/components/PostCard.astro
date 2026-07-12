@@ -1,14 +1,18 @@
 ---
 import type { BlogPostLike } from '../lib/types';
+import { t, formatDate, type Locale } from '../lib/i18n';
 
 interface Props {
   post: BlogPostLike;
   /** Route prefix posts live under. Defaults to "/blog". */
   base?: string;
+  /** Locale for date formatting and UI strings. Defaults to "en". */
+  locale?: Locale;
 }
 
-const { post, base = '/blog' } = Astro.props;
+const { post, base = '/blog', locale = 'en' } = Astro.props;
 const href = `${base}/${post.id}`;
+const strings = t(locale);
 // Consumers must generate a matching .webp for every heroImage (see README).
 const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
 ---
@@ -35,19 +39,13 @@ const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp
     <p class="text-muted mb-6 leading-relaxed text-lg">{post.data.description}</p>
     <div class="flex items-center justify-between">
       <time datetime={post.data.pubDate.toISOString()} class="text-sm text-muted">
-        {
-          post.data.pubDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })
-        }
+        {formatDate(post.data.pubDate, locale)}
       </time>
       <a
         href={href}
         class="inline-flex items-center text-accent font-semibold hover:text-accent-strong transition-colors group"
       >
-        Read More
+        {strings.readMore}
         <svg
           class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
           viewBox="0 0 20 20"

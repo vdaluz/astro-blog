@@ -46,6 +46,8 @@ export interface BlogPostingSchemaOptions {
   basePath?: string;
   /** Site/brand name for the JSON-LD publisher. Falls back to the post author. */
   publisherName?: string;
+  /** BCP 47 language tag for the `inLanguage` field, e.g. "en" or "es". Omitted if unset. */
+  locale?: string;
 }
 
 /**
@@ -57,6 +59,7 @@ export function buildBlogPostingSchema({
   siteUrl,
   basePath = '/blog',
   publisherName,
+  locale,
 }: BlogPostingSchemaOptions) {
   const origin = siteUrl.replace(/\/$/, '');
   const prefix = basePath.replace(/\/$/, '');
@@ -74,5 +77,6 @@ export function buildBlogPostingSchema({
     url: postUrl,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     ...(post.data.heroImage ? { image: `${origin}${post.data.heroImage}` } : {}),
+    ...(locale ? { inLanguage: locale } : {}),
   };
 }
