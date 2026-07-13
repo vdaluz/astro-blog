@@ -1,0 +1,32 @@
+---
+export interface FilterOption {
+  label: string;
+  href: string;
+  active?: boolean;
+}
+
+interface Props {
+  options: FilterOption[];
+  ariaLabel?: string;
+}
+
+const { options, ariaLabel = 'Filter posts' } = Astro.props;
+---
+
+<nav aria-label={ariaLabel} class="flex flex-wrap gap-2 mb-8">
+  {
+    options.map((opt) => (
+      <a
+        href={opt.href}
+        aria-current={opt.active ? 'page' : undefined}
+        class={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
+          opt.active
+            ? 'bg-accent text-on-accent border-accent'
+            : 'border-border text-muted hover:text-accent hover:border-accent'
+        }`}
+      >
+        {opt.label}
+      </a>
+    ))
+  }
+</nav>

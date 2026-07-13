@@ -72,12 +72,13 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 
 | Import | What |
 | --- | --- |
-| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `shikiConfig`, `buildRssItems`, `t`, `formatDate`, types |
+| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `filterPostsByTag`, `shikiConfig`, `buildRssItems`, `t`, `formatDate`, types |
 | `@vdaluz/astro-blog/PostCard.astro` | Post card for listings |
 | `@vdaluz/astro-blog/RelatedPosts.astro` | Related-posts grid |
 | `@vdaluz/astro-blog/Pagination.astro` | Paginated listing nav |
 | `@vdaluz/astro-blog/Subheading.astro` | Small uppercase section label |
 | `@vdaluz/astro-blog/BlogPostMeta.astro` | JSON-LD BlogPosting `<script>` |
+| `@vdaluz/astro-blog/TagFilterNav.astro` | Filter chip nav (e.g. by project or topic tag) |
 
 Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accept an optional `base` prop (default `/blog`).
 
@@ -108,6 +109,38 @@ Related posts:
 ```ts
 import { scoreRelated } from '@vdaluz/astro-blog';
 const related = scoreRelated(entry, allPosts, { k: 3, aliases: { ha: 'home-assistant' } });
+```
+
+Tag/project filtering: the route (`src/pages/blog/tag/[tag].astro` or similar) is per-app since URL
+shape and how you build the tag list are site-specific. `filterPostsByTag` + `Pagination` do the rest -
+`Pagination`'s `base` prop already works with any route prefix, no changes needed for a filtered route:
+
+```ts
+import { filterPostsByTag } from '@vdaluz/astro-blog';
+
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const all = await getCollection('blog');
+  const filtered = filterPostsByTag(all, 'homelab').sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+  );
+  return paginate(filtered, { pageSize: 5 });
+};
+```
+
+```astro
+<Pagination page={page} base="/blog/tag/homelab" />
+```
+
+`TagFilterNav` renders the filter chips themselves - build the `options` array (label, href, whether
+it's the active filter) from whatever tag list your app tracks:
+
+```astro
+<TagFilterNav
+  options={[
+    { label: 'All', href: '/blog', active: !tag },
+    { label: 'Homelab', href: '/blog/tag/homelab', active: tag === 'homelab' },
+  ]}
+/>
 ```
 
 RSS feed (`src/pages/rss.xml.ts`, needs the app's own `@astrojs/rss` dependency — this package doesn't ship it):
