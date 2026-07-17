@@ -84,6 +84,8 @@ Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accep
 
 `PostCard`, `RelatedPosts`, `Pagination`, and `BlogPostMeta` accept an optional `locale` prop (`'en' | 'es'`, default `'en'`) that localizes their built-in UI strings (dates, "Read More", pagination labels) and `BlogPostMeta`'s JSON-LD `inLanguage` field. It does not affect the post URLs those components build - a locale-specific `base` still needs passing separately if the consuming app routes translated posts under a different prefix (e.g. `/es/blog`).
 
+`PostCard` accepts an optional `categoryLabel` prop to override the category badge text (default `post.data.category`). `RelatedPosts` accepts the same override as a `(post) => string` function, since it renders a badge per post. Use these when `category` is a canonical/English taxonomy value that the consuming app translates for display - the package has no built-in category translation since the taxonomy itself is app-defined.
+
 ## Per-app glue
 
 Each site keeps these — they can't be packaged because they bind to the app's own collection and routes.

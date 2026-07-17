@@ -8,9 +8,12 @@ interface Props {
   base?: string;
   /** Locale for date formatting and UI strings. Defaults to "en". */
   locale?: Locale;
+  /** Override text for each post's category badge. Defaults to post.data.category. */
+  categoryLabel?: (post: BlogPostLike) => string;
 }
 
-const { posts, base = '/blog', locale = 'en' } = Astro.props;
+const { posts, base = '/blog', locale = 'en', categoryLabel = (post) => post.data.category } =
+  Astro.props;
 const strings = t(locale);
 // Consumers must generate a matching .webp for every heroImage (see README).
 const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
@@ -33,7 +36,7 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
           )}
           <div class="p-6 flex flex-col flex-grow">
             <div class="inline-block self-start px-3 py-1 bg-accent-soft text-accent rounded-full text-xs font-medium mb-3">
-              {post.data.category}
+              {categoryLabel(post)}
             </div>
             <h3 class="text-lg font-bold text-fg mb-3 hover:text-accent transition-colors leading-snug">
               <a href={`${base}/${post.id}`}>{post.data.title}</a>
