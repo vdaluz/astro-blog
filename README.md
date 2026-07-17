@@ -1,6 +1,6 @@
 # @vdaluz/astro-blog
 
-Shared Astro blog building blocks for vdaluz.com-family sites: token-driven components, related-posts scoring, a schema factory, and Shiki config. Ships raw `.astro` and `.ts` — the consuming app's Astro/Vite compiles them (no prebuild step).
+Shared Astro blog building blocks for [vdaluz.com](https://vdaluz.com)-family sites: token-driven components, related-posts scoring, a schema factory, and Shiki config. Ships raw `.astro` and `.ts` — the consuming app's Astro/Vite compiles them (no prebuild step).
 
 > **Scope:** this is a component library, not a drop-in blog. Routes (`src/pages/blog/*`) and content (`src/content/blog/*.md`) stay in each app — see [Per-app glue](#per-app-glue).
 
@@ -169,3 +169,8 @@ export const GET: APIRoute = async (context) => {
   });
 };
 ```
+
+## Consumers
+
+- [vdaluz.com](https://vdaluz.com)
+- [imperfectsystems.com](https://imperfectsystems.com)
