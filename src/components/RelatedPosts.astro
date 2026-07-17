@@ -24,7 +24,7 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {
       posts.map((post) => (
-        <article class="bg-surface rounded-xl shadow overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
+        <article class="bg-surface rounded-xl shadow-[0_1px_3px_0_rgb(0_0_0_/_0.1),0_1px_2px_-1px_rgb(0_0_0_/_0.1)] overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
           {heroImageWebp(post.data.heroImage) && (
             <a href={`${base}/${post.id}`}>
               <img
@@ -34,14 +34,14 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
               />
             </a>
           )}
-          <div class="p-6 flex flex-col flex-grow">
+          <div class="p-6 flex flex-col grow">
             <div class="inline-block self-start px-3 py-1 bg-accent-soft text-accent rounded-full text-xs font-medium mb-3">
               {categoryLabel(post)}
             </div>
             <h3 class="text-lg font-bold text-fg mb-3 hover:text-accent transition-colors leading-snug">
               <a href={`${base}/${post.id}`}>{post.data.title}</a>
             </h3>
-            <p class="text-muted text-sm leading-relaxed mb-4 flex-grow line-clamp-3">
+            <p class="text-muted text-sm leading-relaxed mb-4 grow line-clamp-3">
               {post.data.description}
             </p>
             <div class="flex items-center justify-between mt-auto">
