@@ -55,7 +55,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
     url.first ? (
       <a
         href={url.first}
-        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToFirstPage}
       >
         &laquo;
@@ -65,7 +65,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
         role="button"
         aria-disabled="true"
         aria-label={strings.goToFirstPage}
-        class="px-3 py-2 text-border cursor-not-allowed"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-border cursor-not-allowed"
       >
         &laquo;
       </span>
@@ -76,7 +76,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
     url.prev ? (
       <a
         href={url.prev}
-        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToPreviousPage}
       >
         &lsaquo;
@@ -86,7 +86,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
         role="button"
         aria-disabled="true"
         aria-label={strings.goToPreviousPage}
-        class="px-3 py-2 text-border cursor-not-allowed"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-border cursor-not-allowed"
       >
         &lsaquo;
       </span>
@@ -96,13 +96,16 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
   {
     pageNumbers.map((pageNum) =>
       pageNum === currentPage ? (
-        <span class="px-3 py-2 bg-accent text-on-accent rounded-lg font-medium" aria-current="page">
+        <span
+          class="hidden sm:inline-flex sm:items-center sm:justify-center sm:min-w-11 sm:min-h-11 px-3 py-2 bg-accent text-on-accent rounded-lg font-medium"
+          aria-current="page"
+        >
           {pageNum}
         </span>
       ) : (
         <a
           href={pageHref(pageNum)}
-          class="px-3 py-2 text-muted hover:text-accent transition-colors rounded-lg hover:bg-surface-muted"
+          class="hidden sm:inline-flex sm:items-center sm:justify-center sm:min-w-11 sm:min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors rounded-lg hover:bg-surface-muted"
         >
           {pageNum}
         </a>
@@ -114,7 +117,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
     url.next ? (
       <a
         href={url.next}
-        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToNextPage}
       >
         &rsaquo;
@@ -124,7 +127,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
         role="button"
         aria-disabled="true"
         aria-label={strings.goToNextPage}
-        class="px-3 py-2 text-border cursor-not-allowed"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-border cursor-not-allowed"
       >
         &rsaquo;
       </span>
@@ -135,7 +138,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
     url.last ? (
       <a
         href={url.last}
-        class="px-3 py-2 text-muted hover:text-accent transition-colors"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToLastPage}
       >
         &raquo;
@@ -145,7 +148,7 @@ const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
         role="button"
         aria-disabled="true"
         aria-label={strings.goToLastPage}
-        class="px-3 py-2 text-border cursor-not-allowed"
+        class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-border cursor-not-allowed"
       >
         &raquo;
       </span>
