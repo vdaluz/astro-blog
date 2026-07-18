@@ -1,6 +1,6 @@
 {
   "name": "@vdaluz/astro-blog",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Shared Astro blog components, related-posts scoring, schema factory, and Shiki config for vdaluz.com-family sites.",
   "type": "module",
   "license": "MIT",

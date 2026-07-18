@@ -22,7 +22,7 @@ const { options, ariaLabel = 'Filter posts' } = Astro.props;
         class={`px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
           opt.active
             ? 'bg-accent text-on-accent border-accent'
-            : 'border-border text-muted hover:text-accent hover:border-accent'
+            : 'border-accent/30 text-muted hover:text-accent hover:border-accent'
         }`}
       >
         {opt.label}
