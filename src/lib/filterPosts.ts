@@ -1,5 +1,5 @@
 import type { BlogPostLike } from './types';
-import { normalizeTag } from './relatedPosts';
+import { normalizeTag } from './relatedPosts.ts';
 
 /**
  * Returns posts from `posts` carrying `tag` (case-insensitive, alias-aware via the
