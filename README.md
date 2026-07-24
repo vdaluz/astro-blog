@@ -79,12 +79,39 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 | `@vdaluz/astro-blog/Subheading.astro` | Small uppercase section label |
 | `@vdaluz/astro-blog/BlogPostMeta.astro` | JSON-LD BlogPosting `<script>` |
 | `@vdaluz/astro-blog/TagFilterNav.astro` | Filter chip nav (e.g. by project or topic tag) |
+| `@vdaluz/astro-blog/TableOfContents.astro` | "On this page" nav from a post's `headings` array (sticky sidebar on desktop, `<details>` on mobile) |
+| `@vdaluz/astro-blog/remark` | `remarkReadingTime` - writes `minutesRead` to the page's frontmatter |
 
 Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accept an optional `base` prop (default `/blog`).
 
 `PostCard`, `RelatedPosts`, `Pagination`, and `BlogPostMeta` accept an optional `locale` prop (`'en' | 'es'`, default `'en'`) that localizes their built-in UI strings (dates, "Read More", pagination labels) and `BlogPostMeta`'s JSON-LD `inLanguage` field. It does not affect the post URLs those components build - a locale-specific `base` still needs passing separately if the consuming app routes translated posts under a different prefix (e.g. `/es/blog`).
 
 `PostCard` accepts an optional `categoryLabel` prop to override the category badge text (default `post.data.category`). `RelatedPosts` accepts the same override as a `(post) => string` function, since it renders a badge per post. Use these when `category` is a canonical/English taxonomy value that the consuming app translates for display - the package has no built-in category translation since the taxonomy itself is app-defined.
+
+### Table of contents + reading time
+
+`TableOfContents` reads the `headings` array Astro's own `render()` already returns - no separate parsing step. It renders nothing if the post has fewer than `minHeadings` (default 3) h2/h3 headings.
+
+```js
+// astro.config.mjs
+import { remarkReadingTime } from '@vdaluz/astro-blog/remark';
+export default defineConfig({ markdown: { remarkPlugins: [remarkReadingTime] } });
+```
+
+```astro
+---
+import TableOfContents from '@vdaluz/astro-blog/TableOfContents.astro';
+import { t } from '@vdaluz/astro-blog';
+
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
+const strings = t(locale);
+---
+
+<span>{strings.minRead(remarkPluginFrontmatter.minutesRead)}</span>
+<TableOfContents headings={headings} locale={locale} />
+```
+
+`TableOfContents` anchors each entry to `#<slug>` - the consuming app's markdown-to-HTML pipeline must emit matching `id` attributes on the rendered `<h2>`/`<h3>` tags (Astro/rehype does this by default; verify if a custom rehype config strips heading ids).
 
 ## Per-app glue
 

@@ -9,6 +9,8 @@ interface Strings {
   goToNextPage: string;
   goToLastPage: string;
   pageOf: (current: number, last: number) => string;
+  onThisPage: string;
+  minRead: (minutes: number) => string;
 }
 
 const STRINGS: Record<Locale, Strings> = {
@@ -21,6 +23,8 @@ const STRINGS: Record<Locale, Strings> = {
     goToNextPage: 'Go to next page',
     goToLastPage: 'Go to last page',
     pageOf: (current, last) => `Page ${current} of ${last}`,
+    onThisPage: 'On this page',
+    minRead: (minutes) => `${minutes} min read`,
   },
   es: {
     readMore: 'Leer más',
@@ -31,6 +35,8 @@ const STRINGS: Record<Locale, Strings> = {
     goToNextPage: 'Ir a la página siguiente',
     goToLastPage: 'Ir a la última página',
     pageOf: (current, last) => `Página ${current} de ${last}`,
+    onThisPage: 'En esta página',
+    minRead: (minutes) => `${minutes} min de lectura`,
   },
 };
 
