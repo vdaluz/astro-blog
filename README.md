@@ -2,9 +2,9 @@
 
 [![CI](https://github.com/vdaluz/astro-blog/actions/workflows/ci.yml/badge.svg)](https://github.com/vdaluz/astro-blog/actions/workflows/ci.yml)
 
-Shared Astro blog building blocks for [vdaluz.com](https://vdaluz.com)-family sites: token-driven components, related-posts scoring, a schema factory, and Shiki config. Ships raw `.astro` and `.ts` — the consuming app's Astro/Vite compiles them (no prebuild step).
+A blog needs a listing page, pagination, related posts, tag filters, JSON-LD, RSS, and a Shiki-highlighted code theme - most of it undifferentiated work you rebuild every time you spin up an Astro site. `@vdaluz/astro-blog` packages that layer as token-driven components, so styling comes from your own CSS custom properties, not a hardcoded palette. Ships raw `.astro` and `.ts` - the consuming app's Astro/Vite compiles them (no prebuild step). Built for and proven in production across two sites, [vdaluz.com](https://vdaluz.com) and [imperfectsystems.com](https://imperfectsystems.com) - see [Consumers](#consumers).
 
-> **Scope:** this is a component library, not a drop-in blog. Routes (`src/pages/blog/*`) and content (`src/content/blog/*.md`) stay in each app — see [Per-app glue](#per-app-glue).
+> **Scope:** this is a component library, not a drop-in blog. Routes (`src/pages/blog/*`) and content (`src/content/blog/*.md`) stay in each app - see [Per-app glue](#per-app-glue).
 
 ## Install
 
@@ -13,7 +13,7 @@ Pinned https tarball from a tag (no registry needed):
 ```jsonc
 // package.json
 "dependencies": {
-  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.2.0.tar.gz"
+  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.7.0.tar.gz"
 }
 ```
 
@@ -21,7 +21,9 @@ Pinned https tarball from a tag (no registry needed):
 > shorthand (and even an explicit `git+https://` URL) to `git+ssh://` in the lockfile.
 > CI runners (e.g. Cloudflare Pages/Workers) have no SSH key, so `npm ci` would fail to
 > clone it. The `/archive/refs/tags/<tag>.tar.gz` URL is anonymous https with an integrity
-> hash in the lockfile — it just works in CI. Bump the tag in the URL to upgrade.
+> hash in the lockfile - it just works in CI. Bump the tag in the URL to upgrade. This is the
+> only supported install path; there's no npm registry package (tag-tarball works for anyone,
+> no registry auth needed).
 
 Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwindcss/typography` in the app.
 
@@ -31,7 +33,7 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
    `bg`, `surface`, `surface-muted`, `fg`, `muted`, `border`, `accent`, `accent-strong`, `accent-soft`, `on-accent`.
    Copy `src/styles/tokens.example.css` into your app and set your palette.
 
-2. **Alias the tokens in `tailwind.config.mjs` AND scan the package** (this glob is the #1 thing people forget — without it the package's utility classes are never generated):
+2. **Alias the tokens in `tailwind.config.mjs` AND scan the package** (this glob is the #1 thing people forget - without it the package's utility classes are never generated):
 
    ```js
    export default {
@@ -68,7 +70,13 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 
    The `shikiConfig` uses `defaultColor: false`, so the CSS handoff is what actually colors code blocks. They must ship together. **Dark-only sites:** keep `shikiConfig` and force `<html class="dark">` so the dark vars always apply.
 
-4. **Generate a matching `.webp` sibling for every `heroImage`.** `PostCard` and `RelatedPosts` derive the thumbnail `src` by swapping the `heroImage` extension (`.jpg`/`.jpeg`/`.png`/`.gif`) for `.webp` — they never render the raw file. If a post sets `heroImage: /assets/images/foo.jpeg`, `assets/images/foo.webp` must exist at that same path or the thumbnail 404s. Any image pipeline that outputs a same-basename `.webp` next to the original works (e.g. a Sharp-based build step); nothing in this package generates it for you.
+4. **Generate a matching `.webp` sibling for every `heroImage`.** `PostCard` and `RelatedPosts` derive the thumbnail `src` by swapping the `heroImage` extension (`.jpg`/`.jpeg`/`.png`/`.gif`) for `.webp` - they never render the raw file. If a post sets `heroImage: /assets/images/foo.jpeg`, `assets/images/foo.webp` must exist at that same path or the thumbnail 404s. Any image pipeline that outputs a same-basename `.webp` next to the original works (e.g. a Sharp-based build step); nothing in this package generates it for you.
+
+## Example
+
+`PostCard` rendering real posts on vdaluz.com's `/blog` listing:
+
+![PostCard grid on vdaluz.com's blog listing page](docs/postcard-example.png)
 
 ## Exports
 
@@ -117,7 +125,7 @@ const strings = t(locale);
 
 ## Per-app glue
 
-Each site keeps these — they can't be packaged because they bind to the app's own collection and routes.
+Each site keeps these - they can't be packaged because they bind to the app's own collection and routes.
 
 `src/content.config.ts`:
 
@@ -174,7 +182,7 @@ it's the active filter) from whatever tag list your app tracks:
 />
 ```
 
-RSS feed (`src/pages/rss.xml.ts`, needs the app's own `@astrojs/rss` dependency — this package doesn't ship it):
+RSS feed (`src/pages/rss.xml.ts`, needs the app's own `@astrojs/rss` dependency - this package doesn't ship it):
 
 ```ts
 import rss from '@astrojs/rss';
@@ -191,13 +199,17 @@ export const GET: APIRoute = async (context) => {
     .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
   return rss({
-    title: 'Your Site — Blog',
+    title: 'Your Site - Blog',
     description: 'Your site description',
     site: context.site!,
     items: buildRssItems(posts),
   });
 };
 ```
+
+## Contributing
+
+Issues welcome. PRs by discussion - open an issue first for anything beyond a typo or docs fix.
 
 ## Consumers
 
