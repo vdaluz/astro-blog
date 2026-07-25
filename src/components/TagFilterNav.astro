@@ -1,4 +1,6 @@
 ---
+import { t, type Locale } from '../lib/i18n';
+
 export interface FilterOption {
   label: string;
   href: string;
@@ -8,12 +10,16 @@ export interface FilterOption {
 interface Props {
   options: FilterOption[];
   ariaLabel?: string;
+  /** Locale for the default aria-label. Defaults to "en". Ignored if ariaLabel is set. */
+  locale?: Locale;
 }
 
-const { options, ariaLabel = 'Filter posts' } = Astro.props;
+const { options, ariaLabel, locale = 'en' } = Astro.props;
+const strings = t(locale);
+const resolvedAriaLabel = ariaLabel ?? strings.filterPosts;
 ---
 
-<nav aria-label={ariaLabel} class="flex flex-wrap gap-2 mb-8">
+<nav aria-label={resolvedAriaLabel} class="flex flex-wrap gap-2 mb-8">
   {
     options.map((opt) => (
       <a

@@ -31,6 +31,8 @@ test('t() returns en strings by default', () => {
   assert.equal(strings.readMore, 'Read More');
   assert.equal(strings.pageOf(2, 5), 'Page 2 of 5');
   assert.equal(strings.minRead(4), '4 min read');
+  assert.equal(strings.blogPagination, 'Blog pagination');
+  assert.equal(strings.filterPosts, 'Filter posts');
 });
 
 test('t("es") returns es strings', () => {
@@ -38,4 +40,6 @@ test('t("es") returns es strings', () => {
   assert.equal(strings.readMore, 'Leer más');
   assert.equal(strings.pageOf(2, 5), 'Página 2 de 5');
   assert.equal(strings.minRead(4), '4 min de lectura');
+  assert.equal(strings.blogPagination, 'Paginación del blog');
+  assert.equal(strings.filterPosts, 'Filtrar publicaciones');
 });

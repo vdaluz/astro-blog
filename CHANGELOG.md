@@ -4,6 +4,16 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-07-25
+
+### Added
+
+- Optional `locale` prop on `TagFilterNav`, defaulting its `aria-label` to a locale-aware string when no explicit `ariaLabel` override is passed.
+
+### Fixed
+
+- `Pagination`'s outer nav `aria-label` and `TagFilterNav`'s default `aria-label` no longer hardcode English - both now route through `t(locale)`.
+
 ## [0.7.2] - 2026-07-25
 
 ### Added

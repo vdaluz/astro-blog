@@ -50,7 +50,7 @@ const pageNumbers = getPageNumbers();
 const pageHref = (n: number) => (n === 1 ? base : `${base}/${n}`);
 ---
 
-<nav class="flex items-center justify-center space-x-2 mt-12" aria-label="Blog pagination">
+<nav class="flex items-center justify-center space-x-2 mt-12" aria-label={strings.blogPagination}>
   {
     url.first ? (
       <a

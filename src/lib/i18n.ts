@@ -11,6 +11,8 @@ interface Strings {
   pageOf: (current: number, last: number) => string;
   onThisPage: string;
   minRead: (minutes: number) => string;
+  blogPagination: string;
+  filterPosts: string;
 }
 
 const STRINGS: Record<Locale, Strings> = {
@@ -25,6 +27,8 @@ const STRINGS: Record<Locale, Strings> = {
     pageOf: (current, last) => `Page ${current} of ${last}`,
     onThisPage: 'On this page',
     minRead: (minutes) => `${minutes} min read`,
+    blogPagination: 'Blog pagination',
+    filterPosts: 'Filter posts',
   },
   es: {
     readMore: 'Leer más',
@@ -37,6 +41,8 @@ const STRINGS: Record<Locale, Strings> = {
     pageOf: (current, last) => `Página ${current} de ${last}`,
     onThisPage: 'En esta página',
     minRead: (minutes) => `${minutes} min de lectura`,
+    blogPagination: 'Paginación del blog',
+    filterPosts: 'Filtrar publicaciones',
   },
 };
 
