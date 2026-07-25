@@ -33,6 +33,8 @@ test('t() returns en strings by default', () => {
   assert.equal(strings.minRead(4), '4 min read');
   assert.equal(strings.blogPagination, 'Blog pagination');
   assert.equal(strings.filterPosts, 'Filter posts');
+  assert.equal(strings.photoCredit, 'Photo:');
+  assert.equal(strings.via, 'via');
 });
 
 test('t("es") returns es strings', () => {
@@ -42,4 +44,6 @@ test('t("es") returns es strings', () => {
   assert.equal(strings.minRead(4), '4 min de lectura');
   assert.equal(strings.blogPagination, 'Paginación del blog');
   assert.equal(strings.filterPosts, 'Filtrar publicaciones');
+  assert.equal(strings.photoCredit, 'Foto:');
+  assert.equal(strings.via, 'vía');
 });

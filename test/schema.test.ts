@@ -79,9 +79,16 @@ test('buildBlogPostingSchema sets inLanguage when locale is given', () => {
   assert.equal(schema.inLanguage, 'es');
 });
 
-test('buildBlogPostingSchema sets dateModified equal to pubDate, current behavior (AST-6 will change this)', () => {
+test('buildBlogPostingSchema falls back dateModified to pubDate when updatedDate is unset', () => {
   const p = post({ pubDate: new Date(2026, 0, 1) });
   const schema = buildBlogPostingSchema({ post: p, siteUrl: 'https://example.com' });
   assert.equal(schema.dateModified, schema.datePublished);
   assert.equal(schema.datePublished, p.data.pubDate.toISOString());
+});
+
+test('buildBlogPostingSchema uses updatedDate for dateModified when set', () => {
+  const p = post({ pubDate: new Date(2026, 0, 1), updatedDate: new Date(2026, 0, 15) });
+  const schema = buildBlogPostingSchema({ post: p, siteUrl: 'https://example.com' });
+  assert.equal(schema.dateModified, p.data.updatedDate!.toISOString());
+  assert.notEqual(schema.dateModified, schema.datePublished);
 });

@@ -30,6 +30,10 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
               <img
                 src={heroImageWebp(post.data.heroImage)}
                 alt={post.data.title}
+                width="640"
+                height="160"
+                loading="lazy"
+                decoding="async"
                 class="w-full h-40 object-cover"
               />
             </a>

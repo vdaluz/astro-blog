@@ -25,7 +25,15 @@ const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp
   {
     heroImageWebp && (
       <a href={href}>
-        <img src={heroImageWebp} alt={post.data.title} class="w-full h-48 object-cover" />
+        <img
+          src={heroImageWebp}
+          alt={post.data.title}
+          width="800"
+          height="192"
+          loading="lazy"
+          decoding="async"
+          class="w-full h-48 object-cover"
+        />
       </a>
     )
   }

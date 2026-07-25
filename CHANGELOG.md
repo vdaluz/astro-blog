@@ -4,6 +4,19 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-07-25
+
+### Added
+
+- `HeroImageCredit` component rendering a post's `heroImageCredit` (photographer link, source, license link) - previously validated by `blogSchema()` but never rendered by anything, a real gap for CC/attribution-required sources like Openverse.
+- Optional `updatedDate` field on `blogSchema()`, used for JSON-LD `dateModified` when present (falls back to `pubDate`).
+- `HeroImageCredit`/`affiliates`/`updatedDate` added to the `BlogPostData` type, matching what `blogSchema()` already produced.
+
+### Fixed
+
+- `Pagination`'s disabled first/prev/next/last placeholders no longer use a non-focusable `role="button"` (an a11y smell - screen readers announced an inoperable button, keyboard users could never reach it) - now marked `aria-hidden` as pure decoration.
+- `PostCard` and `RelatedPosts` images now set `loading="lazy"`, `decoding="async"`, and explicit `width`/`height` - below-the-fold listing images no longer eagerly fetch, and intrinsic dimensions reduce layout shift.
+
 ## [0.8.0] - 2026-07-25
 
 ### Added

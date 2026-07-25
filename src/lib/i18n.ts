@@ -13,6 +13,8 @@ interface Strings {
   minRead: (minutes: number) => string;
   blogPagination: string;
   filterPosts: string;
+  photoCredit: string;
+  via: string;
 }
 
 const STRINGS: Record<Locale, Strings> = {
@@ -29,6 +31,8 @@ const STRINGS: Record<Locale, Strings> = {
     minRead: (minutes) => `${minutes} min read`,
     blogPagination: 'Blog pagination',
     filterPosts: 'Filter posts',
+    photoCredit: 'Photo:',
+    via: 'via',
   },
   es: {
     readMore: 'Leer más',
@@ -43,6 +47,8 @@ const STRINGS: Record<Locale, Strings> = {
     minRead: (minutes) => `${minutes} min de lectura`,
     blogPagination: 'Paginación del blog',
     filterPosts: 'Filtrar publicaciones',
+    photoCredit: 'Foto:',
+    via: 'vía',
   },
 };
 

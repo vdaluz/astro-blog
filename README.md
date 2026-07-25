@@ -88,6 +88,7 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 | `@vdaluz/astro-blog/Pagination.astro` | Paginated listing nav |
 | `@vdaluz/astro-blog/Subheading.astro` | Small uppercase section label |
 | `@vdaluz/astro-blog/BlogPostMeta.astro` | JSON-LD BlogPosting `<script>` |
+| `@vdaluz/astro-blog/HeroImageCredit.astro` | Photographer/source/license attribution line for a post's `heroImageCredit` |
 | `@vdaluz/astro-blog/TagFilterNav.astro` | Filter chip nav (e.g. by project or topic tag) |
 | `@vdaluz/astro-blog/TableOfContents.astro` | "On this page" nav from a post's `headings` array (sticky sidebar on desktop, `<details>` on mobile) |
 | `@vdaluz/astro-blog/remark` | `remarkReadingTime` - writes `minutesRead` to the page's frontmatter |
@@ -97,6 +98,24 @@ Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accep
 `PostCard`, `RelatedPosts`, `Pagination`, and `BlogPostMeta` accept an optional `locale` prop (`'en' | 'es'`, default `'en'`) that localizes their built-in UI strings (dates, "Read More", pagination labels) and `BlogPostMeta`'s JSON-LD `inLanguage` field. It does not affect the post URLs those components build - a locale-specific `base` still needs passing separately if the consuming app routes translated posts under a different prefix (e.g. `/es/blog`).
 
 `PostCard` accepts an optional `categoryLabel` prop to override the category badge text (default `post.data.category`). `RelatedPosts` accepts the same override as a `(post) => string` function, since it renders a badge per post. Use these when `category` is a canonical/English taxonomy value that the consuming app translates for display - the package has no built-in category translation since the taxonomy itself is app-defined.
+
+### Hero image attribution
+
+`blogSchema()` validates an optional `heroImageCredit` field (`name`, `url`, `source: 'pexels' | 'unsplash' | 'openverse'`, optional `licenseName`/`licenseUrl`) for posts whose hero image needs attribution - required for CC/attribution-required sources like Openverse, not just polite. Render it with `HeroImageCredit`:
+
+```astro
+---
+import HeroImageCredit from '@vdaluz/astro-blog/HeroImageCredit.astro';
+---
+
+{entry.data.heroImageCredit && (
+  <HeroImageCredit credit={entry.data.heroImageCredit} locale={locale} />
+)}
+```
+
+### Updated dates
+
+Set `updatedDate` in a post's frontmatter when you substantively edit it after publishing. `buildBlogPostingSchema` uses it for the JSON-LD `dateModified` field, falling back to `pubDate` when unset - so an edited post can signal freshness without every post needing the field.
 
 ### Table of contents + reading time
 

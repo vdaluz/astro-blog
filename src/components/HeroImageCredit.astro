@@ -1,0 +1,33 @@
+---
+import { t, type Locale } from '../lib/i18n';
+import type { HeroImageCredit as HeroImageCreditData } from '../lib/types';
+
+interface Props {
+  credit: HeroImageCreditData;
+  /** Locale for the credit label text. Defaults to "en". */
+  locale?: Locale;
+}
+
+const { credit, locale = 'en' } = Astro.props;
+const strings = t(locale);
+---
+
+<p class="text-xs text-muted mt-2">
+  {strings.photoCredit}
+  {' '}
+  <a href={credit.url} class="underline hover:text-accent">{credit.name}</a>
+  {' '}
+  {strings.via}
+  {' '}
+  {credit.source}
+  {
+    credit.licenseUrl && credit.licenseName && (
+      <>
+        {', '}
+        <a href={credit.licenseUrl} class="underline hover:text-accent">
+          {credit.licenseName}
+        </a>
+      </>
+    )
+  }
+</p>

@@ -1,6 +1,6 @@
 {
   "name": "@vdaluz/astro-blog",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Token-driven Astro blog components, related-posts scoring, a schema factory, and Shiki config - proven in production on vdaluz.com and imperfectsystems.com.",
   "keywords": [
     "astro",
@@ -38,6 +38,7 @@
     "./Pagination.astro": "./src/components/Pagination.astro",
     "./Subheading.astro": "./src/components/Subheading.astro",
     "./BlogPostMeta.astro": "./src/components/BlogPostMeta.astro",
+    "./HeroImageCredit.astro": "./src/components/HeroImageCredit.astro",
     "./TagFilterNav.astro": "./src/components/TagFilterNav.astro",
     "./TableOfContents.astro": "./src/components/TableOfContents.astro",
     "./remark": "./src/lib/remark-reading-time.ts",
