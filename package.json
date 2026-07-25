@@ -1,9 +1,28 @@
 {
   "name": "@vdaluz/astro-blog",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Token-driven Astro blog components, related-posts scoring, a schema factory, and Shiki config - proven in production on vdaluz.com and imperfectsystems.com.",
-  "type": "module",
+  "keywords": [
+    "astro",
+    "astro-component",
+    "blog",
+    "blog-components",
+    "related-posts",
+    "rss",
+    "shiki",
+    "json-ld"
+  ],
+  "homepage": "https://github.com/vdaluz/astro-blog#readme",
+  "bugs": {
+    "url": "https://github.com/vdaluz/astro-blog/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vdaluz/astro-blog.git"
+  },
   "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
   "scripts": {
     "check": "astro check",
     "test": "node --test"
