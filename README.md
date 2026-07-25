@@ -8,12 +8,16 @@ A blog needs a listing page, pagination, related posts, tag filters, JSON-LD, RS
 
 ## Install
 
-Pinned https tarball from a tag (no registry needed):
+```
+npm install @vdaluz/astro-blog
+```
+
+Alternatively, a pinned https tarball from a tag works too, with no registry involved:
 
 ```jsonc
 // package.json
 "dependencies": {
-  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.7.0.tar.gz"
+  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.9.0.tar.gz"
 }
 ```
 
@@ -21,9 +25,7 @@ Pinned https tarball from a tag (no registry needed):
 > shorthand (and even an explicit `git+https://` URL) to `git+ssh://` in the lockfile.
 > CI runners (e.g. Cloudflare Pages/Workers) have no SSH key, so `npm ci` would fail to
 > clone it. The `/archive/refs/tags/<tag>.tar.gz` URL is anonymous https with an integrity
-> hash in the lockfile - it just works in CI. Bump the tag in the URL to upgrade. This is the
-> only supported install path; there's no npm registry package (tag-tarball works for anyone,
-> no registry auth needed).
+> hash in the lockfile - it just works in CI. Bump the tag in the URL to upgrade.
 
 Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwindcss/typography` in the app.
 
