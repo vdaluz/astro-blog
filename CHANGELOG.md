@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-08-03
+
+### Added
+
+- `pt` added to `Locale` (Brazilian Portuguese), with matching `STRINGS` and `DATE_LOCALE` entries. Unblocks pt-BR routing in imperfectsystems.com (IPS-461).
+
 ## [0.9.0] - 2026-07-25
 
 ### Added

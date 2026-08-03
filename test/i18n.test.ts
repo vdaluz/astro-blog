@@ -20,6 +20,14 @@ test('formatDate en and es output differ', () => {
   assert.notEqual(formatDate(date, 'en'), formatDate(date, 'es'));
 });
 
+test('formatDate defaults to long-form pt-BR', () => {
+  const date = new Date(2026, 6, 24);
+  const result = formatDate(date, 'pt');
+  // pt-BR ICU output isn't stable across Node builds, so check substrings
+  assert.match(result, /julho/);
+  assert.match(result, /2026/);
+});
+
 test('formatDate honors custom options, pinned to a fixed timezone for determinism', () => {
   const date = new Date(Date.UTC(2026, 6, 24));
   const result = formatDate(date, 'en', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
@@ -46,4 +54,15 @@ test('t("es") returns es strings', () => {
   assert.equal(strings.filterPosts, 'Filtrar publicaciones');
   assert.equal(strings.photoCredit, 'Foto:');
   assert.equal(strings.via, 'vía');
+});
+
+test('t("pt") returns pt strings', () => {
+  const strings = t('pt');
+  assert.equal(strings.readMore, 'Leia Mais');
+  assert.equal(strings.pageOf(2, 5), 'Página 2 de 5');
+  assert.equal(strings.minRead(4), '4 min de leitura');
+  assert.equal(strings.blogPagination, 'Paginação do blog');
+  assert.equal(strings.filterPosts, 'Filtrar publicações');
+  assert.equal(strings.photoCredit, 'Foto:');
+  assert.equal(strings.via, 'via');
 });
