@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+### Changed
+
+- `Locale` widened from a closed `'en' | 'es' | 'pt'` union to accept any string (known locales still autocomplete). `t()` now falls back to `en` strings for an unrecognized locale instead of returning `undefined`, and accepts an optional `overrides?: Partial<Strings>` so a consumer can supply its own strings for a locale the package doesn't ship, without a version bump. `formatDate()` falls back to passing the raw locale string to `Intl.DateTimeFormat` for unrecognized locales. `Strings` and `BUILT_IN_LOCALES` are now exported.
+
 ## [0.10.0] - 2026-08-03
 
 ### Added

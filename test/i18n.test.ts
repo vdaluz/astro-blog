@@ -66,3 +66,27 @@ test('t("pt") returns pt strings', () => {
   assert.equal(strings.photoCredit, 'Foto:');
   assert.equal(strings.via, 'via');
 });
+
+test('t() falls back to en strings for an unrecognized locale', () => {
+  const strings = t('fr');
+  assert.equal(strings.readMore, 'Read More');
+});
+
+test('t() merges overrides over the resolved base', () => {
+  const strings = t('en', { readMore: 'Keep Reading' });
+  assert.equal(strings.readMore, 'Keep Reading');
+  assert.equal(strings.read, 'Read');
+});
+
+test('t() applies overrides on top of the en fallback for an unrecognized locale', () => {
+  const strings = t('fr', { readMore: 'Lire la suite' });
+  assert.equal(strings.readMore, 'Lire la suite');
+  assert.equal(strings.read, 'Read');
+});
+
+test('formatDate falls back to the raw locale string for an unrecognized locale', () => {
+  const date = new Date(Date.UTC(2026, 6, 24));
+  const result = formatDate(date, 'fr-FR', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+  assert.match(result, /juillet/);
+  assert.match(result, /2026/);
+});
