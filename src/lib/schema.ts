@@ -49,6 +49,16 @@ export interface BlogPostingSchemaOptions {
   publisherName?: string;
   /** BCP 47 language tag for the `inLanguage` field, e.g. "en" or "es". Omitted if unset. */
   locale?: string;
+  /**
+   * Whether this site's actual served/canonical post URL ends in a trailing slash.
+   * Defaults to false. Check your own `<link rel="canonical">` output (and served-URL
+   * behavior - prerendered routes on some hosts are slash-terminated regardless of the
+   * app's own trailingSlash config) before setting this; don't assume it from the app
+   * config alone. Mismatching this from the real canonical produces a self-inconsistent
+   * page (JSON-LD `url` disagreeing with the declared canonical), which can cause search
+   * engines to pick the wrong canonical form.
+   */
+  trailingSlash?: boolean;
 }
 
 /**
@@ -61,10 +71,11 @@ export function buildBlogPostingSchema({
   basePath = '/blog',
   publisherName,
   locale,
+  trailingSlash = false,
 }: BlogPostingSchemaOptions) {
   const origin = siteUrl.replace(/\/$/, '');
   const prefix = basePath.replace(/\/$/, '');
-  const postUrl = `${origin}${prefix}/${post.id}`;
+  const postUrl = `${origin}${prefix}/${post.id}${trailingSlash ? '/' : ''}`;
   const authorName = post.data.author || publisherName || '';
   return {
     '@context': 'https://schema.org',

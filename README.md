@@ -119,6 +119,10 @@ import HeroImageCredit from '@vdaluz/astro-blog/HeroImageCredit.astro';
 
 Set `updatedDate` in a post's frontmatter when you substantively edit it after publishing. `buildBlogPostingSchema` uses it for the JSON-LD `dateModified` field, falling back to `pubDate` when unset - so an edited post can signal freshness without every post needing the field.
 
+### Trailing slash
+
+`buildBlogPostingSchema`/`BlogPostMeta` build the JSON-LD `url`/`mainEntityOfPage.@id` fields without a trailing slash by default. If your site's actual canonical post URL is slash-terminated, pass `trailingSlash={true}` - otherwise the JSON-LD `url` disagrees with your page's own `<link rel="canonical">`, which can cause search engines to pick the wrong canonical form. Check your real canonical output before setting this, not just your app's `trailingSlash` config: prerendered routes on some hosts are served slash-terminated regardless of that config (confirm with `curl -sI` on a bare post URL - a `307`/`308` to the slash form means you need `trailingSlash={true}`).
+
 ### Table of contents + reading time
 
 `TableOfContents` reads the `headings` array Astro's own `render()` already returns - no separate parsing step. It renders nothing if the post has fewer than `minHeadings` (default 3) h2/h3 headings.

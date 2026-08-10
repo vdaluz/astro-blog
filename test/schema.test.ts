@@ -27,6 +27,18 @@ test('buildBlogPostingSchema defaults basePath to /blog', () => {
   assert.equal(schema.url, 'https://example.com/blog/my-post');
 });
 
+test('buildBlogPostingSchema omits trailing slash by default', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com' });
+  assert.equal(schema.url, 'https://example.com/blog/my-post');
+  assert.equal(schema.mainEntityOfPage['@id'], schema.url);
+});
+
+test('buildBlogPostingSchema appends a trailing slash when trailingSlash is true', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com', trailingSlash: true });
+  assert.equal(schema.url, 'https://example.com/blog/my-post/');
+  assert.equal(schema.mainEntityOfPage['@id'], schema.url);
+});
+
 test('buildBlogPostingSchema falls back author -> publisherName -> empty string', () => {
   const withAuthor = buildBlogPostingSchema({ post: post({ author: 'Vic' }), siteUrl: 'https://example.com' });
   assert.equal(withAuthor.author.name, 'Vic');

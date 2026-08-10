@@ -13,10 +13,19 @@ interface Props {
   publisherName?: string;
   /** Locale for the JSON-LD `inLanguage` field. Omitted if unset. */
   locale?: Locale;
+  /** Whether this site's canonical post URL ends in a trailing slash. Defaults to false. */
+  trailingSlash?: boolean;
 }
 
-const { post, siteUrl, basePath = '/blog', publisherName, locale } = Astro.props;
-const schema = buildBlogPostingSchema({ post, siteUrl, basePath, publisherName, locale });
+const { post, siteUrl, basePath = '/blog', publisherName, locale, trailingSlash } = Astro.props;
+const schema = buildBlogPostingSchema({
+  post,
+  siteUrl,
+  basePath,
+  publisherName,
+  locale,
+  trailingSlash,
+});
 ---
 
 {/* JSON-LD is valid in <body>; render this anywhere inside the post page. */}
