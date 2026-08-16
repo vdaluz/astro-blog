@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`@vdaluz/astro-blog`: shared Astro blog building blocks for vdaluz.com-family sites. Token-driven components (PostCard, RelatedPosts, Pagination, Subheading, BlogPostMeta), related-posts scoring, a schema factory (`blogSchema()`), RSS item builder, and Shiki config. It is a component library, not a drop-in blog: routes and content stay in each consuming app. Consumed by vdaluz.com and imperfectsystems.com as a pinned https-tarball dependency.
+`@vdaluz/astro-blog`: shared Astro blog building blocks for vdaluz.com-family sites. Token-driven components (PostCard, RelatedPosts, Pagination, Subheading, BlogPostMeta), related-posts scoring, a schema factory (`blogSchema()`), RSS item builder, and Shiki config. It is a component library, not a drop-in blog: routes and content stay in each consuming app. Consumed by vdaluz.com, imperfectsystems.com, and freetoolbox.net as an npm-registry semver pin.
 
 ## Workflow
 
@@ -20,10 +20,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Release process
 
-Same tag-pinned-tarball process shared by all `@vdaluz/*` component libraries — see root
-`~/Repos/CLAUDE.md` → "Astro shared-library release process".
+Same tag-then-npm-publish process shared by all `@vdaluz/*` component libraries, consumed via
+npm-registry semver pins (not tarball URLs, since META-90) - see root `~/Repos/CLAUDE.md` →
+"Astro shared-library release process".
 
 ## Consumers
 
 - vdaluz.com
 - imperfectsystems.com (dev-log blog; see that repo's CLAUDE.md Blog section)
+- freetoolbox.net (per-tool "how it works" explainer articles)
