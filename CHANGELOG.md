@@ -4,9 +4,23 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-08-22
+
+### Added
+
+- `buildBlogPostingSchema`/`BlogPostMeta` accept an optional `trailingSlash` prop to control whether the JSON-LD `url`/`mainEntityOfPage.@id` fields are slash-terminated.
+
 ### Changed
 
 - `Locale` widened from a closed `'en' | 'es' | 'pt'` union to accept any string (known locales still autocomplete). `t()` now falls back to `en` strings for an unrecognized locale instead of returning `undefined`, and accepts an optional `overrides?: Partial<Strings>` so a consumer can supply its own strings for a locale the package doesn't ship, without a version bump. `formatDate()` falls back to passing the raw locale string to `Intl.DateTimeFormat` for unrecognized locales. `Strings` and `BUILT_IN_LOCALES` are now exported.
+
+### Removed
+
+- Dropped the tarball-install alternative from the README - every consumer moved to npm-registry semver pins, and the tarball block's hardcoded version tag had drifted from the published version.
+
+### Documentation
+
+- Added npm version and license badges. Standardized the README's tail-section order and added a License section.
 
 ## [0.10.0] - 2026-08-03
 

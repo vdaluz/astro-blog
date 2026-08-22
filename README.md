@@ -1,6 +1,8 @@
 # @vdaluz/astro-blog
 
+[![npm version](https://img.shields.io/npm/v/@vdaluz/astro-blog.svg)](https://www.npmjs.com/package/@vdaluz/astro-blog)
 [![CI](https://github.com/vdaluz/astro-blog/actions/workflows/ci.yml/badge.svg)](https://github.com/vdaluz/astro-blog/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/@vdaluz/astro-blog.svg)](LICENSE)
 
 A blog needs a listing page, pagination, related posts, tag filters, JSON-LD, RSS, and a Shiki-highlighted code theme - most of it undifferentiated work you rebuild every time you spin up an Astro site. `@vdaluz/astro-blog` packages that layer as token-driven components, so styling comes from your own CSS custom properties, not a hardcoded palette. Ships raw `.astro` and `.ts` - the consuming app's Astro/Vite compiles them (no prebuild step). Built for and proven in production across two sites, [vdaluz.com](https://vdaluz.com) and [imperfectsystems.com](https://imperfectsystems.com) - see [Consumers](#consumers).
 
@@ -11,21 +13,6 @@ A blog needs a listing page, pagination, related posts, tag filters, JSON-LD, RS
 ```
 npm install @vdaluz/astro-blog
 ```
-
-Alternatively, a pinned https tarball from a tag works too, with no registry involved:
-
-```jsonc
-// package.json
-"dependencies": {
-  "@vdaluz/astro-blog": "https://github.com/vdaluz/astro-blog/archive/refs/tags/v0.9.0.tar.gz"
-}
-```
-
-> **Why a tarball, not `github:vdaluz/astro-blog#v0.1.0`?** npm canonicalizes GitHub
-> shorthand (and even an explicit `git+https://` URL) to `git+ssh://` in the lockfile.
-> CI runners (e.g. Cloudflare Pages/Workers) have no SSH key, so `npm ci` would fail to
-> clone it. The `/archive/refs/tags/<tag>.tar.gz` URL is anonymous https with an integrity
-> hash in the lockfile - it just works in CI. Bump the tag in the URL to upgrade.
 
 Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwindcss/typography` in the app.
 
@@ -240,3 +227,7 @@ Issues welcome. PRs by discussion - open an issue first for anything beyond a ty
 
 - [vdaluz.com](https://vdaluz.com)
 - [imperfectsystems.com](https://imperfectsystems.com)
+
+## License
+
+MIT
