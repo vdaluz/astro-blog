@@ -54,12 +54,14 @@ const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp
       <a
         href={href}
         class="inline-flex items-center text-accent font-semibold hover:text-accent-strong transition-colors group"
+        aria-label={`${strings.readMore} ${post.data.title}`}
       >
         {strings.readMore}
         <svg
           class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
           viewBox="0 0 20 20"
           fill="currentColor"
+          aria-hidden="true"
         >
           <path
             fill-rule="evenodd"

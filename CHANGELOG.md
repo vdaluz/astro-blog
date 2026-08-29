@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-08-29
+
+### Fixed
+
+- `PostCard`'s "Read More" link now carries an `aria-label` including the post title (matching the existing pattern in `RelatedPosts`), instead of the generic label alone repeated identically across every card on a page. Also marks its decorative arrow SVG `aria-hidden="true"` for consistency with `RelatedPosts`.
+
 ## [1.0.0] - 2026-08-22
 
 ### Changed
