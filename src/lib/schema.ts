@@ -92,3 +92,16 @@ export function buildBlogPostingSchema({
     ...(locale ? { inLanguage: locale } : {}),
   };
 }
+
+const SCRIPT_TAG_ESCAPES: Record<string, string> = { '<': '\\u003c', '>': '\\u003e', '&': '\\u0026' };
+
+/**
+ * Serializes a value for embedding in an inline `<script>` tag (e.g. via
+ * Astro's `set:html`). `JSON.stringify` does not escape `<`, so a `</script>`
+ * or `<!--` inside any string value would close the script element early and
+ * inject the remainder as markup - `<` is the load-bearing escape here; `>`
+ * and `&` are escaped only for symmetry.
+ */
+export function serializeForScriptTag(value: unknown): string {
+  return JSON.stringify(value).replace(/[<>&]/g, (char) => SCRIPT_TAG_ESCAPES[char]);
+}

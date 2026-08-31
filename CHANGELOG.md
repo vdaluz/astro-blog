@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+### Fixed
+
+- `BlogPostMeta`'s JSON-LD script tag used raw `JSON.stringify`, which does not escape `<` - a post `title`/`description` containing `</script>` or `<!--` would close the script element early and inject the remainder as markup. Added an internal `serializeForScriptTag` helper (matching the escaping `@vdaluz/astro-opt-in-analytics`'s `ConsentGate.astro` already does) and switched `BlogPostMeta.astro` to use it.
+
 ## [1.0.1] - 2026-08-29
 
 ### Fixed

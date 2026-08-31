@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBlogPostingSchema } from '../src/lib/schema.ts';
+import { buildBlogPostingSchema, serializeForScriptTag } from '../src/lib/schema.ts';
 import type { BlogPostLike } from '../src/lib/types.ts';
 
 function post(overrides: Partial<BlogPostLike['data']> = {}): BlogPostLike {
@@ -103,4 +103,22 @@ test('buildBlogPostingSchema uses updatedDate for dateModified when set', () => 
   const schema = buildBlogPostingSchema({ post: p, siteUrl: 'https://example.com' });
   assert.equal(schema.dateModified, p.data.updatedDate!.toISOString());
   assert.notEqual(schema.dateModified, schema.datePublished);
+});
+
+test('serializeForScriptTag escapes </script> and <!-- so neither can close or comment out the script element (AST-51)', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ description: 'x</script><script>alert(1)</script> and <!-- a comment' }),
+    siteUrl: 'https://example.com',
+  });
+  const serialized = serializeForScriptTag(schema);
+  assert.equal(serialized.includes('<'), false);
+});
+
+test('serializeForScriptTag round-trips to the exact same value (a corrupting escape, not just a missing one, would fail this)', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ description: 'x</script><script>alert(1)</script> and <!-- a comment & an ampersand > and a gt' }),
+    siteUrl: 'https://example.com',
+  });
+  const serialized = serializeForScriptTag(schema);
+  assert.deepEqual(JSON.parse(serialized), schema);
 });

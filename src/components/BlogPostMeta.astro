@@ -1,5 +1,5 @@
 ---
-import { buildBlogPostingSchema } from '../lib/schema';
+import { buildBlogPostingSchema, serializeForScriptTag } from '../lib/schema';
 import type { BlogPostLike } from '../lib/types';
 import type { Locale } from '../lib/i18n';
 
@@ -29,4 +29,4 @@ const schema = buildBlogPostingSchema({
 ---
 
 {/* JSON-LD is valid in <body>; render this anywhere inside the post page. */}
-<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script type="application/ld+json" set:html={serializeForScriptTag(schema)} />
