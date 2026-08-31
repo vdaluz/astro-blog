@@ -1,6 +1,7 @@
 ---
 import type { BlogPostLike } from '../lib/types';
 import { t, formatDate, type Locale } from '../lib/i18n';
+import { postHref } from '../lib/post-href';
 
 interface Props {
   post: BlogPostLike;
@@ -10,10 +11,18 @@ interface Props {
   locale?: Locale;
   /** Override text for the category badge. Defaults to post.data.category. */
   categoryLabel?: string;
+  /** Whether this site's canonical post URL ends in a trailing slash. Defaults to false. */
+  trailingSlash?: boolean;
 }
 
-const { post, base = '/blog', locale = 'en', categoryLabel = post.data.category } = Astro.props;
-const href = `${base}/${post.id}`;
+const {
+  post,
+  base = '/blog',
+  locale = 'en',
+  categoryLabel = post.data.category,
+  trailingSlash = false,
+} = Astro.props;
+const href = postHref(base, post.id, trailingSlash);
 const strings = t(locale);
 // Consumers must generate a matching .webp for every heroImage (see README).
 const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');

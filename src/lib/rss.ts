@@ -1,4 +1,5 @@
 import type { BlogPostLike } from './types';
+import { postHref } from './post-href.ts';
 
 /**
  * Structurally assignable to @astrojs/rss's `RSSFeedItem` — this package doesn't
@@ -20,13 +21,16 @@ export interface RssItem {
  * `author` is intentionally not mapped: the RSS spec's `author` field expects an
  * email address, but `BlogPostData.author` is a display name.
  */
-export function buildRssItems(posts: BlogPostLike[], opts?: { basePath?: string }): RssItem[] {
+export function buildRssItems(
+  posts: BlogPostLike[],
+  opts?: { basePath?: string; trailingSlash?: boolean },
+): RssItem[] {
   const prefix = (opts?.basePath ?? '/blog').replace(/\/$/, '');
   return posts.map((post) => ({
     title: post.data.title,
     description: post.data.description,
     pubDate: post.data.pubDate,
-    link: `${prefix}/${post.id}`,
+    link: postHref(prefix, post.id, opts?.trailingSlash),
     categories: [post.data.category, ...(post.data.tags ?? [])].filter(
       (c, i, a) => a.indexOf(c) === i,
     ),

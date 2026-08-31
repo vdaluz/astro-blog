@@ -1,6 +1,7 @@
 ---
 import type { BlogPostLike } from '../lib/types';
 import { t, formatDate, type Locale } from '../lib/i18n';
+import { postHref } from '../lib/post-href';
 
 interface Props {
   posts: BlogPostLike[];
@@ -10,10 +11,17 @@ interface Props {
   locale?: Locale;
   /** Override text for each post's category badge. Defaults to post.data.category. */
   categoryLabel?: (post: BlogPostLike) => string;
+  /** Whether this site's canonical post URL ends in a trailing slash. Defaults to false. */
+  trailingSlash?: boolean;
 }
 
-const { posts, base = '/blog', locale = 'en', categoryLabel = (post) => post.data.category } =
-  Astro.props;
+const {
+  posts,
+  base = '/blog',
+  locale = 'en',
+  categoryLabel = (post) => post.data.category,
+  trailingSlash = false,
+} = Astro.props;
 const strings = t(locale);
 // Consumers must generate a matching .webp for every heroImage (see README).
 const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
@@ -26,7 +34,7 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
       posts.map((post) => (
         <article class="bg-surface rounded-xl shadow-[0_1px_3px_0_rgb(0_0_0_/_0.1),0_1px_2px_-1px_rgb(0_0_0_/_0.1)] overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
           {heroImageWebp(post.data.heroImage) && (
-            <a href={`${base}/${post.id}`}>
+            <a href={postHref(base, post.id, trailingSlash)}>
               <img
                 src={heroImageWebp(post.data.heroImage)}
                 alt={post.data.title}
@@ -43,7 +51,7 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
               {categoryLabel(post)}
             </div>
             <h3 class="text-lg font-bold text-fg mb-3 hover:text-accent transition-colors leading-snug">
-              <a href={`${base}/${post.id}`}>{post.data.title}</a>
+              <a href={postHref(base, post.id, trailingSlash)}>{post.data.title}</a>
             </h3>
             <p class="text-muted text-sm leading-relaxed mb-4 grow line-clamp-3">
               {post.data.description}
@@ -53,7 +61,7 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
                 {formatDate(post.data.pubDate, locale, { year: 'numeric', month: 'short', day: 'numeric' })}
               </time>
               <a
-                href={`${base}/${post.id}`}
+                href={postHref(base, post.id, trailingSlash)}
                 class="inline-flex items-center text-accent text-sm font-semibold hover:text-accent-strong transition-colors group"
                 aria-label={`${strings.read} ${post.data.title}`}
               >

@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+### Added
+
+- `PostCard`, `RelatedPosts`, `Pagination`, and `buildRssItems` all now accept a `trailingSlash` prop/option, completing the trailing-slash wiring the JSON-LD schema already supported. Every default stays `false` - no existing consumer's output changes unless it opts in.
+
 ### Fixed
 
 - `BlogPostMeta`'s JSON-LD script tag used raw `JSON.stringify`, which does not escape `<` - a post `title`/`description` containing `</script>` or `<!--` would close the script element early and inject the remainder as markup. Added an internal `serializeForScriptTag` helper (matching the escaping `@vdaluz/astro-opt-in-analytics`'s `ConsentGate.astro` already does) and switched `BlogPostMeta.astro` to use it.

@@ -37,3 +37,18 @@ test('buildRssItems maps title, description, and pubDate straight through', () =
   assert.equal(item.description, p.data.description);
   assert.equal(item.pubDate, p.data.pubDate);
 });
+
+test('buildRssItems omits a trailing slash by default', () => {
+  const [item] = buildRssItems([post('a', 'homelab')]);
+  assert.equal(item.link, '/blog/a');
+});
+
+test('buildRssItems appends a trailing slash when trailingSlash is true', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { trailingSlash: true });
+  assert.equal(item.link, '/blog/a/');
+});
+
+test('buildRssItems combines a trimmed custom basePath with a trailing slash', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { basePath: '/posts/', trailingSlash: true });
+  assert.equal(item.link, '/posts/a/');
+});
