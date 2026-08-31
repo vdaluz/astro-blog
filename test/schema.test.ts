@@ -105,7 +105,7 @@ test('buildBlogPostingSchema uses updatedDate for dateModified when set', () => 
   assert.notEqual(schema.dateModified, schema.datePublished);
 });
 
-test('serializeForScriptTag escapes </script> and <!-- so neither can close or comment out the script element (AST-51)', () => {
+test('serializeForScriptTag escapes </script> and <!-- so neither can close or comment out the script element', () => {
   const schema = buildBlogPostingSchema({
     post: post({ description: 'x</script><script>alert(1)</script> and <!-- a comment' }),
     siteUrl: 'https://example.com',
