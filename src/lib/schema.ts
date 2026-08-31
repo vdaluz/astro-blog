@@ -88,7 +88,9 @@ export function buildBlogPostingSchema({
     publisher: { '@type': 'Person', name: publisherName || authorName, url: origin },
     url: postUrl,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
-    ...(post.data.heroImage ? { image: `${origin}${post.data.heroImage}` } : {}),
+    // Points at the original file, not the .webp thumbnail PostCard/RelatedPosts render -
+    // the original is the only file this package's own contract guarantees exists.
+    ...(post.data.heroImage ? { image: new URL(post.data.heroImage, `${origin}/`).href } : {}),
     ...(locale ? { inLanguage: locale } : {}),
   };
 }

@@ -81,6 +81,22 @@ test('buildBlogPostingSchema resolves image against siteUrl when heroImage is se
   assert.equal(schema.image, 'https://example.com/images/hero.png');
 });
 
+test('buildBlogPostingSchema resolves a heroImage missing its leading slash', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ heroImage: 'images/hero.png' }),
+    siteUrl: 'https://example.com',
+  });
+  assert.equal(schema.image, 'https://example.com/images/hero.png');
+});
+
+test('buildBlogPostingSchema passes an absolute heroImage URL through unchanged', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ heroImage: 'https://cdn.example/x.jpg' }),
+    siteUrl: 'https://example.com',
+  });
+  assert.equal(schema.image, 'https://cdn.example/x.jpg');
+});
+
 test('buildBlogPostingSchema omits inLanguage when locale is unset', () => {
   const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com' });
   assert.equal('inLanguage' in schema, false);
