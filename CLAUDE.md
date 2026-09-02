@@ -12,7 +12,7 @@ Shared preamble: `.claude/rules/git-workflow-direct-to-main.md`.
 
 ## Conventions
 
-Shared `@vdaluz/astro-*` conventions (raw source/no build step, per-path exports):
+Shared `@vdaluz/astro-*` conventions (raw source/no build step, per-path exports, `.ts` extensions on relative imports):
 `.claude/rules/astro-package-conventions.md`.
 
 - **Token-driven styling.** Components reference only the token custom properties documented in the README (`--bg`, `--surface`, `--surface-muted`, `--fg`, `--muted`, `--border`, `--accent`, `--accent-strong`, `--accent-soft`, `--on-accent`). Never hardcode a site's palette; `src/styles/tokens.example.css` is the reference set consumers copy.
