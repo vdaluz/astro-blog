@@ -10,6 +10,7 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ### Fixed
 
+- `PostCard` and `RelatedPosts` thumbnail images set `alt` to the post title while sitting inside a link immediately followed by a heading with that same title - a screen reader announced the title twice per card. Thumbnails now use `alt=""` since the adjacent heading already carries the accessible name.
 - `BlogPostMeta`'s JSON-LD script tag used raw `JSON.stringify`, which does not escape `<` - a post `title`/`description` containing `</script>` or `<!--` would close the script element early and inject the remainder as markup. Added an internal `serializeForScriptTag` helper (matching the escaping `@vdaluz/astro-opt-in-analytics`'s `ConsentGate.astro` already does) and switched `BlogPostMeta.astro` to use it.
 
 ## [1.0.1] - 2026-08-29
