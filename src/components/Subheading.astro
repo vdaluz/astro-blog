@@ -2,10 +2,13 @@
 interface Props {
   text: string;
   align?: 'left' | 'center' | 'right';
+  /** @deprecated Use `tone`. Removed in 2.0. `'blue'` maps to `accent`, `'gray'` to `muted`. */
   color?: 'blue' | 'gray';
+  tone?: 'accent' | 'muted';
 }
 
-const { text, align = 'left', color = 'blue' } = Astro.props;
+const { text, align = 'left', color, tone } = Astro.props;
+const resolvedTone: 'accent' | 'muted' = tone ?? (color === 'gray' ? 'muted' : 'accent');
 
 const alignClasses = {
   left: 'text-left',
@@ -13,15 +16,15 @@ const alignClasses = {
   right: 'text-right',
 };
 
-const colorClasses = {
-  blue: 'text-accent',
-  gray: 'text-muted',
+const toneClasses = {
+  accent: 'text-accent',
+  muted: 'text-muted',
 };
 ---
 
 <div class={`mb-4 ${alignClasses[align]}`}>
   <span
-    class={`inline-block text-sm uppercase tracking-wider font-semibold ${colorClasses[color]}`}
+    class={`inline-block text-sm uppercase tracking-wider font-semibold ${toneClasses[resolvedTone]}`}
   >
     {text}
   </span>

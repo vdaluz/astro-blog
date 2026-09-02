@@ -88,6 +88,8 @@ Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accep
 
 `PostCard` accepts an optional `categoryLabel` prop to override the category badge text (default `post.data.category`). `RelatedPosts` accepts the same override as a `(post) => string` function, since it renders a badge per post. Use these when `category` is a canonical/English taxonomy value that the consuming app translates for display - the package has no built-in category translation since the taxonomy itself is app-defined.
 
+`Subheading` accepts an optional `tone?: 'accent' | 'muted'` prop (default `'accent'`) mapping to the same `--accent`/`--muted` token custom properties every other component uses. Its older `color?: 'blue' | 'gray'` prop is deprecated (`'blue'` behaves as `'accent'`, `'gray'` as `'muted'`) and will be removed in 2.0 - it named a literal color rather than a token, which is misleading on any site whose accent isn't actually blue.
+
 ### Hero image attribution
 
 `blogSchema()` validates an optional `heroImageCredit` field (`name`, `url`, `source: 'pexels' | 'unsplash' | 'openverse'`, optional `licenseName`/`licenseUrl`) for posts whose hero image needs attribution - required for CC/attribution-required sources like Openverse, not just polite. Render it with `HeroImageCredit`:

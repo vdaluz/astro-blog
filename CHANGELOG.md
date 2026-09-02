@@ -6,7 +6,12 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ### Added
 
+- `Subheading` accepts a new `tone?: 'accent' | 'muted'` prop, replacing the older `color?: 'blue' | 'gray'` (see Deprecated below). Default behavior is unchanged - no existing consumer's rendered output changes.
 - `PostCard`, `RelatedPosts`, `Pagination`, and `buildRssItems` all now accept a `trailingSlash` prop/option, completing the trailing-slash wiring the JSON-LD schema already supported. Every default stays `false` - no existing consumer's output changes unless it opts in.
+
+### Deprecated
+
+- `Subheading`'s `color?: 'blue' | 'gray'` prop is deprecated in favor of `tone?: 'accent' | 'muted'` and will be removed in 2.0. `color="blue"` continues to behave exactly as before (maps to `accent`); it named a literal color rather than a token, which is misleading on any site whose accent isn't actually blue. Once a consumer bumps to this version, `astro check` will report a `ts(6385)` deprecation hint (not an error) on every existing `color=` usage.
 
 ### Fixed
 
