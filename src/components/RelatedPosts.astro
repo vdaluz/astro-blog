@@ -34,7 +34,7 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
       posts.map((post) => (
         <article class="bg-surface rounded-xl shadow-[0_1px_3px_0_rgb(0_0_0_/_0.1),0_1px_2px_-1px_rgb(0_0_0_/_0.1)] overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
           {heroImageWebp(post.data.heroImage) && (
-            <a href={postHref(base, post.id, trailingSlash)}>
+            <a href={postHref(base, post.id, trailingSlash)} aria-hidden="true" tabindex="-1">
               <img
                 src={heroImageWebp(post.data.heroImage)}
                 alt=""

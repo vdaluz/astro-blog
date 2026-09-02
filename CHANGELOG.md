@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-09-02
+
+### Fixed
+
+- 1.1.0's `alt=""` fix on `PostCard`/`RelatedPosts` thumbnails (originally AST-53) left those images' wrapping links with no discernible text - each thumbnail sits inside its own `<a>`, separate from the title heading's `<a>`, so emptying `alt` didn't just stop a double announcement, it made the thumbnail link invisible to screen readers and keyboard nav entirely. Caught by a full a11y run against real content, the first time this shipped past a scratch-page check. Fixed by marking the thumbnail `<a>` `aria-hidden="true" tabindex="-1"` in both components, removing the redundant link from the accessibility tree rather than re-adding a name to it (which would have just recreated the original double-announcement problem).
+
 ## [1.1.0] - 2026-09-02
 
 ### Added

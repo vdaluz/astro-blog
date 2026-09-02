@@ -33,7 +33,7 @@ const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp
 >
   {
     heroImageWebp && (
-      <a href={href}>
+      <a href={href} aria-hidden="true" tabindex="-1">
         <img
           src={heroImageWebp}
           alt=""
