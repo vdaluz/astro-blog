@@ -1,5 +1,5 @@
 import { z } from 'astro/zod';
-import type { BlogPostLike } from './types';
+import type { BlogPostLike } from './types.ts';
 
 /**
  * Zod schema for a blog collection. Pass `defaultAuthor` to set the per-site

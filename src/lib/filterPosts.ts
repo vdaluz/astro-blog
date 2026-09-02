@@ -1,4 +1,4 @@
-import type { BlogPostLike } from './types';
+import type { BlogPostLike } from './types.ts';
 import { normalizeTag } from './relatedPosts.ts';
 
 /**

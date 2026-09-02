@@ -1,4 +1,4 @@
-import type { BlogPostLike } from './types';
+import type { BlogPostLike } from './types.ts';
 
 export interface ScoreRelatedOptions {
   /** Max number of related posts to return. Defaults to 3. */
