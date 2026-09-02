@@ -4,10 +4,16 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-02
+
 ### Added
 
 - `Subheading` accepts a new `tone?: 'accent' | 'muted'` prop, replacing the older `color?: 'blue' | 'gray'` (see Deprecated below). Default behavior is unchanged - no existing consumer's rendered output changes.
 - `PostCard`, `RelatedPosts`, `Pagination`, and `buildRssItems` all now accept a `trailingSlash` prop/option, completing the trailing-slash wiring the JSON-LD schema already supported. Every default stays `false` - no existing consumer's output changes unless it opts in.
+
+### Changed
+
+- `Subheading`'s eyebrow label now carries `font-mono`, matching how both real consumers already treat this exact UI role: vdaluz.com's own local eyebrow component uses a mono face, and imperfectsystems.com has a sitewide `.eyebrow` CSS class doing the same. The package stays font-agnostic per its own conventions - it uses the Tailwind `font-mono` utility, which each consumer's own `tailwind.config`'s `fontFamily.mono` resolves to their actual brand face.
 
 ### Deprecated
 
