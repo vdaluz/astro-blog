@@ -63,9 +63,9 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
               <a
                 href={postHref(base, post.id, trailingSlash)}
                 class="inline-flex items-center text-accent text-sm font-semibold hover:text-accent-strong transition-colors group"
-                aria-label={`${strings.read} ${post.data.title}`}
               >
                 {strings.read}
+                <span class="sr-only">: {post.data.title}</span>
                 <svg
                   class="w-3 h-3 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
                   viewBox="0 0 20 20"

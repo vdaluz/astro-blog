@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-09-05
+
+### Fixed
+
+- `PostCard` and `RelatedPosts` link text: the "Read More"/"Read" anchor carried an `aria-label` override with the post title appended, which satisfies SC 2.5.3 (the visible text is a prefix of the accessible name) but fails Lighthouse's `link-text` audit, which reads only the visible DOM text. Dropped the `aria-label` override in favor of a visually-hidden `sr-only` span carrying the title inside the anchor, so the accessible name comes from real DOM text instead.
+
 ## [1.2.0] - 2026-09-04
 
 ### Added
