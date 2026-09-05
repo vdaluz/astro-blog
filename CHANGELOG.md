@@ -4,6 +4,12 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-04
+
+### Added
+
+- `postHref` and `serializeForScriptTag` are now exported from the package entry. Both already existed internally (`postHref` builds a post's href the same way `PostCard`/`RelatedPosts`/`Pagination` do; `serializeForScriptTag` safely serializes a value for a JSON-LD `<script>` tag) but weren't reachable by consumers, who were liable to reimplement the same logic the 1.1.0/1.1.1 fixes had to correct.
+
 ## [1.1.1] - 2026-09-02
 
 ### Fixed
