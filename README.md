@@ -71,7 +71,7 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 
 | Import | What |
 | --- | --- |
-| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `filterPostsByTag`, `shikiConfig`, `buildRssItems`, `t`, `formatDate`, types |
+| `@vdaluz/astro-blog` | `blogSchema`, `buildBlogPostingSchema`, `scoreRelated`, `normalizeTag`, `filterPostsByTag`, `shikiConfig`, `buildRssItems`, `t`, `formatDate`, `postHref`, `serializeForScriptTag`, types |
 | `@vdaluz/astro-blog/PostCard.astro` | Post card for listings |
 | `@vdaluz/astro-blog/RelatedPosts.astro` | Related-posts grid |
 | `@vdaluz/astro-blog/Pagination.astro` | Paginated listing nav |
@@ -111,6 +111,21 @@ Set `updatedDate` in a post's frontmatter when you substantively edit it after p
 ### Trailing slash
 
 Every URL-building surface in this package defaults to no trailing slash and accepts a `trailingSlash` prop/option to opt in: `BlogPostMeta` (JSON-LD's `url`/`mainEntityOfPage.@id`), `PostCard`, `RelatedPosts`, `Pagination` (its numbered page links, including page 1's own href), and `buildRssItems` (each item's `link`). If your site's actual canonical post URL is slash-terminated, pass `trailingSlash={true}` (or `{ trailingSlash: true }` for `buildRssItems`) to **every one of these** - passing it to only one (e.g. just `BlogPostMeta`) leaves the rest emitting slash-less URLs that disagree with JSON-LD and your page's own `<link rel="canonical">`, which can cause search engines to pick the wrong canonical form. Check your real canonical output before setting this, not just your app's `trailingSlash` config: prerendered routes on some hosts are served slash-terminated regardless of that config (confirm with `curl -sI` on a bare post URL - a `307`/`308` to the slash form means you need `trailingSlash={true}`).
+
+### Building your own URLs or JSON-LD
+
+`postHref(base, id, trailingSlash)` is the exact helper `PostCard`, `RelatedPosts`, and `Pagination` use internally to build a post's href. Reach for it directly when building your own card, archive list, or sitemap entry, instead of reimplementing the same `${base}/${id}` concatenation - that duplication is how the original trailing-slash drift covered above happened.
+
+`serializeForScriptTag(value)` safely serializes a value for a `<script type="application/ld+json">` tag - `JSON.stringify` alone can emit a literal `</script>` inside a string field, which breaks the page. `BlogPostMeta` already uses it internally; call it yourself when embedding a second JSON-LD block at the layout level (e.g. `WebSite`/`Organization` schema next to `BlogPostMeta`'s `BlogPosting`):
+
+```astro
+---
+import { serializeForScriptTag } from '@vdaluz/astro-blog';
+
+const websiteSchema = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'My Site' };
+---
+<script type="application/ld+json" set:html={serializeForScriptTag(websiteSchema)} />
+```
 
 ### Table of contents + reading time
 

@@ -1,5 +1,6 @@
-export { blogSchema, buildBlogPostingSchema } from './lib/schema.ts';
+export { blogSchema, buildBlogPostingSchema, serializeForScriptTag } from './lib/schema.ts';
 export type { BlogPostingSchemaOptions } from './lib/schema.ts';
+export { postHref } from './lib/post-href.ts';
 export { scoreRelated, normalizeTag } from './lib/relatedPosts.ts';
 export type { ScoreRelatedOptions } from './lib/relatedPosts.ts';
 export { filterPostsByTag } from './lib/filterPosts.ts';
