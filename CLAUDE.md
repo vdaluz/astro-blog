@@ -1,7 +1,5 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
 ## What this repo is
 
 `@vdaluz/astro-blog`: shared Astro blog building blocks for vdaluz.com-family sites. Token-driven components (PostCard, RelatedPosts, Pagination, Subheading, BlogPostMeta), related-posts scoring, a schema factory (`blogSchema()`), RSS item builder, and Shiki config. It is a component library, not a drop-in blog: routes and content stay in each consuming app. Consumed by vdaluz.com, imperfectsystems.com, and freetoolbox.net as an npm-registry semver pin.
