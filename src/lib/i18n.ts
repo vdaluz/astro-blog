@@ -73,7 +73,8 @@ const STRINGS: Record<BuiltInLocale, Strings> = {
 };
 
 export function t(locale: Locale = 'en', overrides?: Partial<Strings>): Strings {
-  const base = STRINGS[locale as BuiltInLocale] ?? STRINGS.en;
+  const primarySubtag = locale.split('-')[0].toLowerCase();
+  const base = STRINGS[locale as BuiltInLocale] ?? STRINGS[primarySubtag as BuiltInLocale] ?? STRINGS.en;
   return overrides ? { ...base, ...overrides } : base;
 }
 

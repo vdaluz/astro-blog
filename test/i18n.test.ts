@@ -72,6 +72,21 @@ test('t() falls back to en strings for an unrecognized locale', () => {
   assert.equal(strings.readMore, 'Read More');
 });
 
+test('t("pt-BR") resolves to pt strings via primary subtag', () => {
+  const strings = t('pt-BR');
+  assert.equal(strings.readMore, 'Leia Mais');
+});
+
+test('t("es-CR") resolves to es strings via primary subtag', () => {
+  const strings = t('es-CR');
+  assert.equal(strings.readMore, 'Leer más');
+});
+
+test('t() falls back to en strings for a region-qualified unrecognized locale', () => {
+  const strings = t('zh-Hant-TW');
+  assert.equal(strings.readMore, 'Read More');
+});
+
 test('t() merges overrides over the resolved base', () => {
   const strings = t('en', { readMore: 'Keep Reading' });
   assert.equal(strings.readMore, 'Keep Reading');
