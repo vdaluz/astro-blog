@@ -4,6 +4,8 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-09-10
+
 ### Fixed
 
 - `t()` resolved locales by exact key match only, so a region-qualified locale (`pt-BR`, `es-CR`) fell straight through to the `en` strings even when the primary-subtag strings (`pt`, `es`) were shipped. Now resolves exact locale -> primary subtag -> `en`. `formatDate()` was unaffected - it already passes the raw BCP-47 tag through to `Intl.DateTimeFormat`, which handles regions on its own.
