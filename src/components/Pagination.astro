@@ -1,5 +1,6 @@
 ---
 import { t, type Locale } from '../lib/i18n.ts';
+import { normalizeBase } from '../lib/post-href.ts';
 
 interface Props {
   page: {
@@ -49,8 +50,11 @@ const getPageNumbers = () => {
 };
 
 const pageNumbers = getPageNumbers();
+const prefix = normalizeBase(base);
 const pageHref = (n: number) => {
-  const href = n === 1 ? base : `${base}/${n}`;
+  const path = n === 1 ? prefix : `${prefix}/${n}`;
+  const href = path || '/';
+  if (href === '/') return href;
   return trailingSlash ? `${href}/` : href;
 };
 ---

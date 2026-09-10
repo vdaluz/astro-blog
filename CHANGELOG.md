@@ -7,6 +7,7 @@ All notable changes to this project are documented here. Format loosely follows 
 ### Fixed
 
 - `t()` resolved locales by exact key match only, so a region-qualified locale (`pt-BR`, `es-CR`) fell straight through to the `en` strings even when the primary-subtag strings (`pt`, `es`) were shipped. Now resolves exact locale -> primary subtag -> `en`. `formatDate()` was unaffected - it already passes the raw BCP-47 tag through to `Intl.DateTimeFormat`, which handles regions on its own.
+- `postHref` didn't normalize a trailing slash on `base`, so `base="/blog/"` produced `/blog//my-post` in `PostCard`/`RelatedPosts`/`Pagination` while `buildRssItems`/`buildBlogPostingSchema` stripped it themselves and stayed clean - the same site config produced disagreeing URLs depending on which component rendered them. Worse, a root-mounted blog (`base="/"`) produced `//my-post`, a protocol-relative URL a browser resolves against a host named `my-post`, not the local path. `postHref` and `Pagination`'s page links now both normalize `base` the same way.
 
 ## [1.2.1] - 2026-09-05
 
