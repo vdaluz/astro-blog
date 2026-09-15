@@ -1,6 +1,7 @@
 # Plane state/label UUIDs and project ID for the AST project.
 # Referenced by CLAUDE.md's "Plane (AST project)" section - edit this file, not
 # CLAUDE.md, when a state or label UUID changes in Plane.
+# AST plane.yml is shared across the five astro-* repos - edit all five.
 
 project_id: 821d6c98-89e6-4e9b-8d60-f07171c7b982
 project_identifier: AST
