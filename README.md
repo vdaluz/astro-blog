@@ -4,7 +4,7 @@
 [![CI](https://github.com/vdaluz/astro-blog/actions/workflows/ci.yml/badge.svg)](https://github.com/vdaluz/astro-blog/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/@vdaluz/astro-blog.svg)](LICENSE)
 
-A blog needs a listing page, pagination, related posts, tag filters, JSON-LD, RSS, and a Shiki-highlighted code theme - most of it undifferentiated work you rebuild every time you spin up an Astro site. `@vdaluz/astro-blog` packages that layer as token-driven components, so styling comes from your own CSS custom properties, not a hardcoded palette. Ships raw `.astro` and `.ts` - the consuming app's Astro/Vite compiles them (no prebuild step). Built for and proven in production across two sites, [vdaluz.com](https://vdaluz.com) and [imperfectsystems.com](https://imperfectsystems.com) - see [Consumers](#consumers).
+A blog needs a listing page, pagination, related posts, tag filters, JSON-LD, RSS, and a Shiki-highlighted code theme - most of it undifferentiated work you rebuild every time you spin up an Astro site. `@vdaluz/astro-blog` packages that layer as token-driven components, so styling comes from your own CSS custom properties, not a hardcoded palette. Ships raw `.astro` and `.ts` - the consuming app's Astro/Vite compiles them (no prebuild step). Built for and proven in production across several sites, including [vdaluz.com](https://vdaluz.com) and [imperfectsystems.com](https://imperfectsystems.com) - see [Consumers](#consumers).
 
 > **Scope:** this is a component library, not a drop-in blog. Routes (`src/pages/blog/*`) and content (`src/content/blog/*.md`) stay in each app - see [Per-app glue](#per-app-glue).
 
@@ -258,6 +258,8 @@ Publishing / OIDC, no token secret):
 
 - [vdaluz.com](https://vdaluz.com)
 - [imperfectsystems.com](https://imperfectsystems.com)
+- [freetoolbox.net](https://freetoolbox.net)
+- [deepcutatlas.com](https://deepcutatlas.com)
 
 ## License
 
