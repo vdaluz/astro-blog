@@ -16,3 +16,15 @@ export function normalizeBase(base: string): string {
 export function postHref(base: string, id: string, trailingSlash = false): string {
   return `${normalizeBase(base)}/${id}${trailingSlash ? '/' : ''}`;
 }
+
+/**
+ * Builds a pagination page's href. Page 1 is the listing root itself. On a
+ * root-mounted blog that root is `/`, which never gets a slash appended.
+ */
+export function pageHref(base: string, n: number, trailingSlash = false): string {
+  const prefix = normalizeBase(base);
+  const path = n === 1 ? prefix : `${prefix}/${n}`;
+  const href = path || '/';
+  if (href === '/') return href;
+  return trailingSlash ? `${href}/` : href;
+}

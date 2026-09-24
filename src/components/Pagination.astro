@@ -1,6 +1,6 @@
 ---
 import { t, type Locale } from '../lib/i18n.ts';
-import { normalizeBase } from '../lib/post-href.ts';
+import { pageHref } from '../lib/post-href.ts';
 
 interface Props {
   page: {
@@ -50,13 +50,6 @@ const getPageNumbers = () => {
 };
 
 const pageNumbers = getPageNumbers();
-const prefix = normalizeBase(base);
-const pageHref = (n: number) => {
-  const path = n === 1 ? prefix : `${prefix}/${n}`;
-  const href = path || '/';
-  if (href === '/') return href;
-  return trailingSlash ? `${href}/` : href;
-};
 ---
 
 <nav class="flex items-center justify-center space-x-2 mt-12" aria-label={strings.blogPagination}>
@@ -109,7 +102,7 @@ const pageHref = (n: number) => {
         </span>
       ) : (
         <a
-          href={pageHref(pageNum)}
+          href={pageHref(base, pageNum, trailingSlash)}
           class="hidden sm:inline-flex sm:items-center sm:justify-center sm:min-w-11 sm:min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors rounded-lg hover:bg-surface-muted"
         >
           {pageNum}
