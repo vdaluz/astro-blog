@@ -8,6 +8,10 @@ All notable changes to this project are documented here. Format loosely follows 
 
 - `BlogPostData` and `HeroImageCredit` are now derived from `blogSchema()`'s parsed output instead of a hand-written copy of its fields, so a field added to the schema reaches the type with no second edit. 0.9.0 had to re-add three drifted fields by hand; this removes the second copy. `author` stays optional on `BlogPostData` even though the schema always defaults it, so hand-built post data still type-checks. Both are now type aliases rather than interfaces: annotating with them and `interface X extends BlogPostData` work as before, but declaration merging into them no longer does.
 
+### Fixed
+
+- `buildBlogPostingSchema` stripped only one trailing slash from `siteUrl` and `basePath`, so `basePath="/blog//"` put a double slash in JSON-LD's `url`/`@id` while `PostCard`/`RelatedPosts` emitted a clean href. It now builds the post URL with `postHref`, and `buildRssItems` passes `basePath` to `postHref` directly instead of pre-stripping it, so all three share one set of URL rules. Repeated trailing slashes on `siteUrl` are now stripped too, which also affects the author/publisher `url` and `image` resolution.
+
 ## [1.2.2] - 2026-09-10
 
 ### Fixed

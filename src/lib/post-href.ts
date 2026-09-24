@@ -8,10 +8,10 @@ export function normalizeBase(base: string): string {
 }
 
 /**
- * Builds a post's href. Matches the trailing-slash convention
- * `buildBlogPostingSchema` already applies to JSON-LD's `url`/`@id`, so a
- * site whose canonical post URL is slash-terminated doesn't get card/RSS
- * links that disagree with JSON-LD.
+ * Builds a post's root-relative href. The single source of post URLs for the
+ * cards, `buildRssItems`, and `buildBlogPostingSchema`'s JSON-LD `url`/`@id`,
+ * so a site whose canonical post URL is slash-terminated gets the same form
+ * everywhere.
  */
 export function postHref(base: string, id: string, trailingSlash = false): string {
   return `${normalizeBase(base)}/${id}${trailingSlash ? '/' : ''}`;

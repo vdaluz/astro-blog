@@ -1,5 +1,6 @@
 import { z } from 'astro/zod';
 import type { BlogPostLike } from './types.ts';
+import { normalizeBase, postHref } from './post-href.ts';
 
 /**
  * Zod schema for a blog collection. Pass `defaultAuthor` to set the per-site
@@ -73,9 +74,8 @@ export function buildBlogPostingSchema({
   locale,
   trailingSlash = false,
 }: BlogPostingSchemaOptions) {
-  const origin = siteUrl.replace(/\/$/, '');
-  const prefix = basePath.replace(/\/$/, '');
-  const postUrl = `${origin}${prefix}/${post.id}${trailingSlash ? '/' : ''}`;
+  const origin = normalizeBase(siteUrl);
+  const postUrl = `${origin}${postHref(basePath, post.id, trailingSlash)}`;
   const authorName = post.data.author || publisherName || '';
   return {
     '@context': 'https://schema.org',

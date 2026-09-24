@@ -22,6 +22,17 @@ test('buildBlogPostingSchema trims trailing slashes from siteUrl and basePath', 
   assert.equal(schema.url, 'https://example.com/blog/my-post');
 });
 
+test('buildBlogPostingSchema trims repeated trailing slashes from siteUrl and basePath', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://x.com//', basePath: '/blog//' });
+  assert.equal(schema.url, 'https://x.com/blog/my-post');
+  assert.equal(schema.author.url, 'https://x.com');
+});
+
+test('buildBlogPostingSchema handles a root-mounted basePath', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com', basePath: '/' });
+  assert.equal(schema.url, 'https://example.com/my-post');
+});
+
 test('buildBlogPostingSchema defaults basePath to /blog', () => {
   const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com' });
   assert.equal(schema.url, 'https://example.com/blog/my-post');

@@ -114,7 +114,7 @@ Every URL-building surface in this package defaults to no trailing slash and acc
 
 ### Building your own URLs or JSON-LD
 
-`postHref(base, id, trailingSlash)` is the exact helper `PostCard`, `RelatedPosts`, and `Pagination` use internally to build a post's href. Reach for it directly when building your own card, archive list, or sitemap entry, instead of reimplementing the same `${base}/${id}` concatenation - that duplication is how the original trailing-slash drift covered above happened.
+`postHref(base, id, trailingSlash)` is the exact helper `PostCard`, `RelatedPosts`, `buildRssItems`, and `buildBlogPostingSchema` use internally to build a post's URL (`Pagination` builds page links, not post links, but strips trailing slashes from `base` the same way). Reach for `postHref` directly when building your own card, archive list, or sitemap entry, instead of reimplementing the same `${base}/${id}` concatenation - that duplication is how the original trailing-slash drift covered above happened.
 
 `serializeForScriptTag(value)` safely serializes a value for a `<script type="application/ld+json">` tag - `JSON.stringify` alone can emit a literal `</script>` inside a string field, which breaks the page. `BlogPostMeta` already uses it internally; call it yourself when embedding a second JSON-LD block at the layout level (e.g. `WebSite`/`Organization` schema next to `BlogPostMeta`'s `BlogPosting`):
 

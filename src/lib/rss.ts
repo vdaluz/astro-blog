@@ -25,12 +25,11 @@ export function buildRssItems(
   posts: BlogPostLike[],
   opts?: { basePath?: string; trailingSlash?: boolean },
 ): RssItem[] {
-  const prefix = (opts?.basePath ?? '/blog').replace(/\/$/, '');
   return posts.map((post) => ({
     title: post.data.title,
     description: post.data.description,
     pubDate: post.data.pubDate,
-    link: postHref(prefix, post.id, opts?.trailingSlash),
+    link: postHref(opts?.basePath ?? '/blog', post.id, opts?.trailingSlash),
     categories: [post.data.category, ...(post.data.tags ?? [])].filter(
       (c, i, a) => a.indexOf(c) === i,
     ),

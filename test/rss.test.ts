@@ -20,6 +20,11 @@ test('buildRssItems honors a custom basePath and trims a trailing slash', () => 
   assert.equal(item.link, '/posts/a');
 });
 
+test('buildRssItems trims repeated trailing slashes from basePath', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { basePath: '/posts//' });
+  assert.equal(item.link, '/posts/a');
+});
+
 test('buildRssItems dedupes category against tags while preserving order', () => {
   const [item] = buildRssItems([post('a', 'homelab', ['homelab', 'docker'])]);
   assert.deepEqual(item.categories, ['homelab', 'docker']);
