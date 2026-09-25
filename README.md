@@ -258,9 +258,10 @@ Publishing / OIDC, no token secret):
 ## Consumers
 
 - [vdaluz.com](https://vdaluz.com)
-- [imperfectsystems.com](https://imperfectsystems.com)
-- [freetoolbox.net](https://freetoolbox.net)
+- [imperfectsystems.com](https://imperfectsystems.com) (dev-log blog)
+- [freetoolbox.net](https://freetoolbox.net) (per-tool "how it works" explainer articles)
 - [deepcutatlas.com](https://deepcutatlas.com)
+- [roomforstars.com](https://roomforstars.com)
 
 ## License
 

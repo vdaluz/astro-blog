@@ -2,7 +2,7 @@
 
 ## What this repo is
 
-`@vdaluz/astro-blog`: shared Astro blog building blocks for vdaluz.com-family sites. Token-driven components (PostCard, RelatedPosts, Pagination, Subheading, BlogPostMeta), related-posts scoring, a schema factory (`blogSchema()`), RSS item builder, and Shiki config. It is a component library, not a drop-in blog: routes and content stay in each consuming app. Consumed by vdaluz.com, imperfectsystems.com, and freetoolbox.net as an npm-registry semver pin.
+`@vdaluz/astro-blog`: shared Astro blog building blocks for vdaluz.com-family sites. Token-driven components (PostCard, RelatedPosts, Pagination, Subheading, BlogPostMeta), related-posts scoring, a schema factory (`blogSchema()`), RSS item builder, and Shiki config. It is a component library, not a drop-in blog: routes and content stay in each consuming app. Consumed as an npm-registry semver pin by the sites in the README's Consumers section.
 
 ## Workflow
 
@@ -19,7 +19,7 @@ Shared `@vdaluz/astro-*` conventions (raw source/no build step, per-path exports
 
 - **Token-driven styling.** Components reference only the token custom properties documented in the README (`--bg`, `--surface`, `--surface-muted`, `--fg`, `--muted`, `--border`, `--accent`, `--accent-strong`, `--accent-soft`, `--on-accent`). Never hardcode a site's palette; `src/styles/tokens.example.css` is the reference set consumers copy.
 - **Dependency-free.** The package has no runtime dependencies (pure data mapping; no @astrojs/rss import in the RSS helper, by design). Keep it that way unless the maintainer explicitly decides otherwise.
-- **Consumers own Tailwind.** Utility classes used in components are only generated because consumers include `./node_modules/@vdaluz/astro-blog/**` in their Tailwind `content` glob. Changing class usage here can silently affect both sites; check both after component changes.
+- **Consumers own Tailwind.** Utility classes used in components are only generated because consumers include `./node_modules/@vdaluz/astro-blog/**` in their Tailwind `content` glob. Changing class usage here can silently affect every consumer site; check them after component changes.
 
 ## Release process
 
@@ -29,6 +29,4 @@ concrete steps.
 
 ## Consumers
 
-- vdaluz.com
-- imperfectsystems.com (dev-log blog; see that repo's CLAUDE.md Blog section)
-- freetoolbox.net (per-tool "how it works" explainer articles)
+The README's Consumers section is the single list. Update it when a repo adds or drops its `@vdaluz/astro-blog` dependency (`grep -l '"@vdaluz/astro-blog"' ~/Repos/*/package.json`).
