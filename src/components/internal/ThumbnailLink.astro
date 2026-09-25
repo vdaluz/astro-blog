@@ -1,0 +1,23 @@
+---
+interface Props {
+  href: string;
+  src: string;
+  width: string;
+  height: string;
+  class: string;
+}
+
+const { href, src, width, height, class: imgClass } = Astro.props;
+---
+
+<a href={href} aria-hidden="true" tabindex="-1">
+  <img
+    src={src}
+    alt=""
+    width={width}
+    height={height}
+    loading="lazy"
+    decoding="async"
+    class={imgClass}
+  />
+</a>

@@ -2,6 +2,9 @@
 import type { BlogPostLike } from '../lib/types.ts';
 import { t, formatDate, type Locale } from '../lib/i18n.ts';
 import { postHref } from '../lib/post-href.ts';
+import { heroImageWebp } from '../lib/hero-image.ts';
+import ThumbnailLink from './internal/ThumbnailLink.astro';
+import ReadLink from './internal/ReadLink.astro';
 
 interface Props {
   post: BlogPostLike;
@@ -24,26 +27,15 @@ const {
 } = Astro.props;
 const href = postHref(base, post.id, trailingSlash);
 const strings = t(locale);
-// Consumers must generate a matching .webp for every heroImage (see README).
-const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
+const thumbnail = heroImageWebp(post.data.heroImage);
 ---
 
 <article
   class="bg-surface rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
 >
   {
-    heroImageWebp && (
-      <a href={href} aria-hidden="true" tabindex="-1">
-        <img
-          src={heroImageWebp}
-          alt=""
-          width="800"
-          height="192"
-          loading="lazy"
-          decoding="async"
-          class="w-full h-48 object-cover"
-        />
-      </a>
+    thumbnail && (
+      <ThumbnailLink href={href} src={thumbnail} width="800" height="192" class="w-full h-48 object-cover" />
     )
   }
   <div class="p-8">
@@ -60,24 +52,13 @@ const heroImageWebp = post.data.heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp
       <time datetime={post.data.pubDate.toISOString()} class="text-sm text-muted">
         {formatDate(post.data.pubDate, locale)}
       </time>
-      <a
+      <ReadLink
         href={href}
+        label={strings.readMore}
+        title={post.data.title}
         class="inline-flex items-center text-accent font-semibold hover:text-accent-strong transition-colors group"
-      >
-        {strings.readMore}
-        <span class="sr-only">: {post.data.title}</span>
-        <svg
-          class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </a>
+        iconClass="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
+      />
     </div>
   </div>
 </article>

@@ -2,6 +2,9 @@
 import type { BlogPostLike } from '../lib/types.ts';
 import { t, formatDate, type Locale } from '../lib/i18n.ts';
 import { postHref } from '../lib/post-href.ts';
+import { heroImageWebp } from '../lib/hero-image.ts';
+import ThumbnailLink from './internal/ThumbnailLink.astro';
+import ReadLink from './internal/ReadLink.astro';
 
 interface Props {
   posts: BlogPostLike[];
@@ -23,35 +26,26 @@ const {
   trailingSlash = false,
 } = Astro.props;
 const strings = t(locale);
-// Consumers must generate a matching .webp for every heroImage (see README).
-const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|gif)$/i, '.webp');
 ---
 
 <section aria-label={strings.relatedReading} class="mt-16 pt-8 border-t border-border">
   <h2 class="text-2xl font-bold text-fg mb-8">{strings.relatedReading}</h2>
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {
-      posts.map((post) => (
+      posts.map((post) => {
+        const href = postHref(base, post.id, trailingSlash);
+        const thumbnail = heroImageWebp(post.data.heroImage);
+        return (
         <article class="bg-surface rounded-xl shadow-[0_1px_3px_0_rgb(0_0_0_/_0.1),0_1px_2px_-1px_rgb(0_0_0_/_0.1)] overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col">
-          {heroImageWebp(post.data.heroImage) && (
-            <a href={postHref(base, post.id, trailingSlash)} aria-hidden="true" tabindex="-1">
-              <img
-                src={heroImageWebp(post.data.heroImage)}
-                alt=""
-                width="640"
-                height="160"
-                loading="lazy"
-                decoding="async"
-                class="w-full h-40 object-cover"
-              />
-            </a>
+          {thumbnail && (
+            <ThumbnailLink href={href} src={thumbnail} width="640" height="160" class="w-full h-40 object-cover" />
           )}
           <div class="p-6 flex flex-col grow">
             <div class="inline-block self-start px-3 py-1 bg-accent-soft text-accent rounded-full text-xs font-medium mb-3">
               {categoryLabel(post)}
             </div>
             <h3 class="text-lg font-bold text-fg mb-3 hover:text-accent transition-colors leading-snug">
-              <a href={postHref(base, post.id, trailingSlash)}>{post.data.title}</a>
+              <a href={href}>{post.data.title}</a>
             </h3>
             <p class="text-muted text-sm leading-relaxed mb-4 grow line-clamp-3">
               {post.data.description}
@@ -60,29 +54,18 @@ const heroImageWebp = (heroImage?: string) => heroImage?.replace(/\.(jpe?g|png|g
               <time datetime={post.data.pubDate.toISOString()} class="text-xs text-muted">
                 {formatDate(post.data.pubDate, locale, { year: 'numeric', month: 'short', day: 'numeric' })}
               </time>
-              <a
-                href={postHref(base, post.id, trailingSlash)}
+              <ReadLink
+                href={href}
+                label={strings.read}
+                title={post.data.title}
                 class="inline-flex items-center text-accent text-sm font-semibold hover:text-accent-strong transition-colors group"
-              >
-                {strings.read}
-                <span class="sr-only">: {post.data.title}</span>
-                <svg
-                  class="w-3 h-3 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </a>
+                iconClass="w-3 h-3 ml-1 transform group-hover:translate-x-1 transition-transform duration-300"
+              />
             </div>
           </div>
         </article>
-      ))
+        );
+      })
     }
   </div>
 </section>
