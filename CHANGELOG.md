@@ -4,6 +4,14 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+### Added
+
+- `BlogPostMeta`, `buildBlogPostingSchema` and `buildRssItems` accept `base` for the route prefix, the same name `PostCard`, `RelatedPosts` and `Pagination` already use. Previously `base` on `BlogPostMeta` was an unknown prop that `astro check` rejected and the runtime ignored.
+
+### Deprecated
+
+- `basePath` on `BlogPostMeta`, `buildBlogPostingSchema` and `buildRssItems`. It still works and is ignored when `base` is also set. Removed in 2.0.
+
 ### Changed
 
 - `BlogPostData` and `HeroImageCredit` are now derived from `blogSchema()`'s parsed output instead of a hand-written copy of its fields, so a field added to the schema reaches the type with no second edit. 0.9.0 had to re-add three drifted fields by hand; this removes the second copy. `author` stays optional on `BlogPostData` even though the schema always defaults it, so hand-built post data still type-checks. Both are now type aliases rather than interfaces: annotating with them and `interface X extends BlogPostData` work as before, but declaration merging into them no longer does.

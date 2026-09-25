@@ -40,25 +40,35 @@ test('blogSchema rejects a heroImageCredit source outside the enum', () => {
   assert.equal(result.success, false);
 });
 
-test('buildBlogPostingSchema trims trailing slashes from siteUrl and basePath', () => {
-  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com/', basePath: '/blog/' });
+test('buildBlogPostingSchema trims trailing slashes from siteUrl and base', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com/', base: '/blog/' });
   assert.equal(schema.url, 'https://example.com/blog/my-post');
 });
 
-test('buildBlogPostingSchema trims repeated trailing slashes from siteUrl and basePath', () => {
-  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://x.com//', basePath: '/blog//' });
+test('buildBlogPostingSchema trims repeated trailing slashes from siteUrl and base', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://x.com//', base: '/blog//' });
   assert.equal(schema.url, 'https://x.com/blog/my-post');
   assert.equal(schema.author.url, 'https://x.com');
 });
 
-test('buildBlogPostingSchema handles a root-mounted basePath', () => {
-  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com', basePath: '/' });
+test('buildBlogPostingSchema handles a root-mounted base', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com', base: '/' });
   assert.equal(schema.url, 'https://example.com/my-post');
 });
 
-test('buildBlogPostingSchema defaults basePath to /blog', () => {
+test('buildBlogPostingSchema defaults base to /blog', () => {
   const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com' });
   assert.equal(schema.url, 'https://example.com/blog/my-post');
+});
+
+test('buildBlogPostingSchema still honors the deprecated basePath option', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com', basePath: '/posts' });
+  assert.equal(schema.url, 'https://example.com/posts/my-post');
+});
+
+test('buildBlogPostingSchema prefers base over the deprecated basePath', () => {
+  const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com', base: '/new', basePath: '/old' });
+  assert.equal(schema.url, 'https://example.com/new/my-post');
 });
 
 test('buildBlogPostingSchema omits trailing slash by default', () => {

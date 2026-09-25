@@ -8,6 +8,8 @@ interface Props {
   /** Origin only, e.g. "https://imperfectsystems.com". */
   siteUrl: string;
   /** Route prefix posts live under. Defaults to "/blog". */
+  base?: string;
+  /** @deprecated Use `base`. Removed in 2.0. Ignored when `base` is set. */
   basePath?: string;
   /** Site/brand name for JSON-LD publisher. Falls back to the post author. */
   publisherName?: string;
@@ -17,11 +19,11 @@ interface Props {
   trailingSlash?: boolean;
 }
 
-const { post, siteUrl, basePath = '/blog', publisherName, locale, trailingSlash } = Astro.props;
+const { post, siteUrl, base, basePath, publisherName, locale, trailingSlash } = Astro.props;
 const schema = buildBlogPostingSchema({
   post,
   siteUrl,
-  basePath,
+  base: base ?? basePath,
   publisherName,
   locale,
   trailingSlash,

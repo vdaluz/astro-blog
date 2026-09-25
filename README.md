@@ -82,7 +82,7 @@ Peer dependency: `astro` >= 6. For post body styling you'll also want `@tailwind
 | `@vdaluz/astro-blog/TableOfContents.astro` | "On this page" nav from a post's `headings` array (sticky sidebar on desktop, `<details>` on mobile) |
 | `@vdaluz/astro-blog/remark` | `remarkReadingTime` - writes `minutesRead` to the page's frontmatter |
 
-Components that build post URLs (`PostCard`, `RelatedPosts`, `Pagination`) accept an optional `base` prop (default `/blog`).
+Everything that builds post URLs takes the route prefix as `base` (default `/blog`): the `PostCard`, `RelatedPosts`, `Pagination` and `BlogPostMeta` props, and the `buildBlogPostingSchema` and `buildRssItems` options. `BlogPostMeta` and the two helpers still accept the older `basePath` spelling, deprecated and removed in 2.0.
 
 `PostCard`, `RelatedPosts`, `Pagination`, and `BlogPostMeta` accept an optional `locale` prop (default `'en'`) that localizes their built-in UI strings (dates, "Read More", pagination labels) and `BlogPostMeta`'s JSON-LD `inLanguage` field. `Locale` ships built-in strings for `'en' | 'es' | 'pt'` (autocompleted in editors) but accepts any string - a region-qualified locale like `'pt-BR'` or `'es-CR'` resolves to its primary subtag's strings (`pt`, `es`), and a locale with no shipped subtag falls back to the `en` strings. The raw string is always passed through to `Intl.DateTimeFormat` for date formatting, which handles regions on its own. Call `t(locale, overrides)` directly with a `Partial<Strings>` to supply your own strings for a locale the package doesn't ship. It does not affect the post URLs those components build - a locale-specific `base` still needs passing separately if the consuming app routes translated posts under a different prefix (e.g. `/es/blog`).
 

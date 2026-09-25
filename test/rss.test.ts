@@ -10,18 +10,28 @@ function post(id: string, category: string, tags?: string[]): BlogPostLike {
   };
 }
 
-test('buildRssItems links posts under the default /blog basePath', () => {
+test('buildRssItems links posts under the default /blog base', () => {
   const [item] = buildRssItems([post('a', 'homelab')]);
   assert.equal(item.link, '/blog/a');
 });
 
-test('buildRssItems honors a custom basePath and trims a trailing slash', () => {
-  const [item] = buildRssItems([post('a', 'homelab')], { basePath: '/posts/' });
+test('buildRssItems still honors the deprecated basePath option', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { basePath: '/posts' });
   assert.equal(item.link, '/posts/a');
 });
 
-test('buildRssItems trims repeated trailing slashes from basePath', () => {
-  const [item] = buildRssItems([post('a', 'homelab')], { basePath: '/posts//' });
+test('buildRssItems prefers base over the deprecated basePath', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { base: '/new', basePath: '/old' });
+  assert.equal(item.link, '/new/a');
+});
+
+test('buildRssItems honors a custom base and trims a trailing slash', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { base: '/posts/' });
+  assert.equal(item.link, '/posts/a');
+});
+
+test('buildRssItems trims repeated trailing slashes from base', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { base: '/posts//' });
   assert.equal(item.link, '/posts/a');
 });
 
@@ -53,7 +63,7 @@ test('buildRssItems appends a trailing slash when trailingSlash is true', () => 
   assert.equal(item.link, '/blog/a/');
 });
 
-test('buildRssItems combines a trimmed custom basePath with a trailing slash', () => {
-  const [item] = buildRssItems([post('a', 'homelab')], { basePath: '/posts/', trailingSlash: true });
+test('buildRssItems combines a trimmed custom base with a trailing slash', () => {
+  const [item] = buildRssItems([post('a', 'homelab')], { base: '/posts/', trailingSlash: true });
   assert.equal(item.link, '/posts/a/');
 });

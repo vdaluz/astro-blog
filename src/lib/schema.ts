@@ -45,6 +45,8 @@ export interface BlogPostingSchemaOptions {
   /** Origin only, e.g. "https://imperfectsystems.com" (trailing slash tolerated). */
   siteUrl: string;
   /** Route prefix posts live under. Defaults to "/blog". */
+  base?: string;
+  /** @deprecated Use `base`. Removed in 2.0. Ignored when `base` is set. */
   basePath?: string;
   /** Site/brand name for the JSON-LD publisher. Falls back to the post author. */
   publisherName?: string;
@@ -69,13 +71,14 @@ export interface BlogPostingSchemaOptions {
 export function buildBlogPostingSchema({
   post,
   siteUrl,
-  basePath = '/blog',
+  base,
+  basePath,
   publisherName,
   locale,
   trailingSlash = false,
 }: BlogPostingSchemaOptions) {
   const origin = normalizeBase(siteUrl);
-  const postUrl = `${origin}${postHref(basePath, post.id, trailingSlash)}`;
+  const postUrl = `${origin}${postHref(base ?? basePath ?? '/blog', post.id, trailingSlash)}`;
   const authorName = post.data.author || publisherName || '';
   return {
     '@context': 'https://schema.org',
