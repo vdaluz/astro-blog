@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBlogPostingSchema, serializeForScriptTag } from '../src/lib/schema.ts';
+import { blogSchema, buildBlogPostingSchema, serializeForScriptTag } from '../src/lib/schema.ts';
 import type { BlogPostLike } from '../src/lib/types.ts';
 
 function post(overrides: Partial<BlogPostLike['data']> = {}): BlogPostLike {
@@ -16,6 +16,29 @@ function post(overrides: Partial<BlogPostLike['data']> = {}): BlogPostLike {
     },
   };
 }
+
+const frontmatter = { title: 'My Post', description: 'A post', pubDate: '2026-01-01', category: 'homelab' };
+const credit = { name: 'Jane Doe', url: 'https://example.com/photo' };
+
+test('blogSchema fills a missing author from defaultAuthor and coerces pubDate to a Date', () => {
+  const data = blogSchema({ defaultAuthor: 'Site' }).parse(frontmatter);
+  assert.equal(data.author, 'Site');
+  assert.ok(data.pubDate instanceof Date);
+});
+
+test('blogSchema defaults author to an empty string without defaultAuthor', () => {
+  assert.equal(blogSchema().parse(frontmatter).author, '');
+});
+
+test('blogSchema accepts a heroImageCredit from a listed source', () => {
+  const data = blogSchema().parse({ ...frontmatter, heroImageCredit: { ...credit, source: 'openverse' } });
+  assert.equal(data.heroImageCredit?.source, 'openverse');
+});
+
+test('blogSchema rejects a heroImageCredit source outside the enum', () => {
+  const result = blogSchema().safeParse({ ...frontmatter, heroImageCredit: { ...credit, source: 'flickr' } });
+  assert.equal(result.success, false);
+});
 
 test('buildBlogPostingSchema trims trailing slashes from siteUrl and basePath', () => {
   const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com/', basePath: '/blog/' });
