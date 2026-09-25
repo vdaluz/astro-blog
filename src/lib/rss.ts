@@ -2,7 +2,7 @@ import type { BlogPostLike } from './types.ts';
 import { postHref } from './post-href.ts';
 
 /**
- * Structurally assignable to @astrojs/rss's `RSSFeedItem` — this package doesn't
+ * Structurally assignable to @astrojs/rss's `RSSFeedItem` - this package doesn't
  * depend on @astrojs/rss itself, so consumers pass `buildRssItems(posts)` straight
  * into `rss({ items })` from their own app-local route.
  */

@@ -1,5 +1,5 @@
 /* ============================================================
-   @vdaluz/astro-blog — token contract
+   @vdaluz/astro-blog - token contract
    ------------------------------------------------------------
    The package components reference ONLY these token names (never
    hard-coded colors). Each consuming site must define them. Values
@@ -9,7 +9,7 @@
    Copy this file into your app (e.g. src/styles/theme.css), keep the
    variable NAMES, and replace the VALUES with your palette.
 
-   Your tailwind.config.mjs must alias these names — see README.
+   Your tailwind.config.mjs must alias these names - see README.
    ============================================================ */
 
 :root {
