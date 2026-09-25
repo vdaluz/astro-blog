@@ -4,6 +4,8 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-09-24
+
 ### Added
 
 - Render tests for `PostCard`, `RelatedPosts`, `Pagination` and `TagFilterNav` (`test/components.vitest.ts`, vitest as a devDependency, Astro's Container API). They pin the attributes the earlier a11y fixes introduced: the `aria-hidden`/`tabindex="-1"` thumbnail link and empty `alt`, the `sr-only` title in the Read link instead of an `aria-label`, localized pagination labels, `aria-hidden` placeholders for unavailable pagination controls, and `aria-current` on the active page and filter. `npm test` runs `node --test` on `test/**/*.test.ts`, then vitest. No runtime change.
