@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+### Fixed
+
+- `Pagination`'s first, previous, next and last links now build their hrefs with `pageHref(base, n, trailingSlash)`, like the numbered links already did. They used to pass through `page.url.*` from Astro's `paginate()`, which follows the site's own `trailingSlash` config and ignored the component's `trailingSlash` prop, so a site that passes the prop but can't set `trailingSlash: 'always'` site-wide still got slash-less edge links and a redirect on each. Which links appear is unchanged (first/previous from page 2 on, next/last before the last page). `page.url` is now optional and no longer read. Output is unchanged for sites whose config already matched the prop.
+
 ## [1.3.0] - 2026-09-24
 
 ### Added

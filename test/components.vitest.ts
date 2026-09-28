@@ -87,6 +87,30 @@ describe('Pagination', () => {
     expect(html).not.toContain('role="button"');
     expect(html.match(/<span\b[^>]*aria-hidden="true"[^>]*>\s*(&laquo;|«|&lsaquo;|‹)\s*<\/span>/g)).toHaveLength(2);
   });
+
+  const edgeHref = (html: string, label: string) =>
+    anchorAttrs(html).find((attrs) => attrs.includes(`aria-label="${label}"`))?.match(/href="([^"]*)"/)?.[1];
+
+  it.each([
+    [false, ['/blog', '/blog', '/blog/3', '/blog/3']],
+    [true, ['/blog/', '/blog/', '/blog/3/', '/blog/3/']],
+  ])('builds the first/prev/next/last hrefs from base with trailingSlash=%s', async (trailingSlash, expected) => {
+    const html = await container.renderToString(Pagination, {
+      props: { trailingSlash, page: page(2, { first: '/blog', prev: '/blog', next: '/blog/3', last: '/blog/3' }) },
+    });
+    const labels = ['Go to first page', 'Go to previous page', 'Go to next page', 'Go to last page'];
+    expect(labels.map((label) => edgeHref(html, label))).toEqual(expected);
+  });
+
+  it('ignores page.url, so a slash-less paginate() url cannot leak into the edge links', async () => {
+    const html = await container.renderToString(Pagination, {
+      props: {
+        trailingSlash: true,
+        page: page(2, { first: '/from-url/1', prev: '/from-url/1', next: '/from-url/3', last: '/from-url/3' }),
+      },
+    });
+    expect(html).not.toContain('/from-url');
+  });
 });
 
 describe('TagFilterNav', () => {

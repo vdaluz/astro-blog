@@ -6,7 +6,8 @@ interface Props {
   page: {
     currentPage: number;
     lastPage: number;
-    url: {
+    /** Not read. Every link is built from `base`, so `trailingSlash` applies to all of them. */
+    url?: {
       prev?: string;
       next?: string;
       first?: string;
@@ -22,8 +23,11 @@ interface Props {
 }
 
 const { page, base = '/blog', locale = 'en', trailingSlash = false } = Astro.props;
-const { currentPage, lastPage, url } = page;
+const { currentPage, lastPage } = page;
 const strings = t(locale);
+const hasPrev = currentPage > 1;
+const hasNext = currentPage < lastPage;
+const href = (n: number) => pageHref(base, n, trailingSlash);
 
 const getPageNumbers = () => {
   const pages = [];
@@ -54,9 +58,9 @@ const pageNumbers = getPageNumbers();
 
 <nav class="flex items-center justify-center space-x-2 mt-12" aria-label={strings.blogPagination}>
   {
-    url.first ? (
+    hasPrev ? (
       <a
-        href={url.first}
+        href={href(1)}
         class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToFirstPage}
       >
@@ -73,9 +77,9 @@ const pageNumbers = getPageNumbers();
   }
 
   {
-    url.prev ? (
+    hasPrev ? (
       <a
-        href={url.prev}
+        href={href(currentPage - 1)}
         class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToPreviousPage}
       >
@@ -102,7 +106,7 @@ const pageNumbers = getPageNumbers();
         </span>
       ) : (
         <a
-          href={pageHref(base, pageNum, trailingSlash)}
+          href={href(pageNum)}
           class="hidden sm:inline-flex sm:items-center sm:justify-center sm:min-w-11 sm:min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors rounded-lg hover:bg-surface-muted"
         >
           {pageNum}
@@ -112,9 +116,9 @@ const pageNumbers = getPageNumbers();
   }
 
   {
-    url.next ? (
+    hasNext ? (
       <a
-        href={url.next}
+        href={href(currentPage + 1)}
         class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToNextPage}
       >
@@ -131,9 +135,9 @@ const pageNumbers = getPageNumbers();
   }
 
   {
-    url.last ? (
+    hasNext ? (
       <a
-        href={url.last}
+        href={href(lastPage)}
         class="inline-flex items-center justify-center min-w-11 min-h-11 px-3 py-2 text-muted hover:text-accent transition-colors"
         aria-label={strings.goToLastPage}
       >
