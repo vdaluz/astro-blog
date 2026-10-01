@@ -131,10 +131,15 @@ const websiteSchema = { '@context': 'https://schema.org', '@type': 'WebSite', na
 
 `TableOfContents` reads the `headings` array Astro's own `render()` already returns - no separate parsing step. It renders nothing if the post has fewer than `minHeadings` (default 3) h2/h3 headings.
 
+`remarkReadingTime` is a remark plugin, so it goes in Astro's `unified()` Markdown processor. `@astrojs/markdown-remark` is only an optional peer of `astro`, so add it to your site's own dependencies (`npm install @astrojs/markdown-remark`). The top-level `markdown.remarkPlugins` key still works but is deprecated since Astro 7.
+
 ```js
 // astro.config.mjs
+import { unified } from '@astrojs/markdown-remark';
 import { remarkReadingTime } from '@vdaluz/astro-blog/remark';
-export default defineConfig({ markdown: { remarkPlugins: [remarkReadingTime] } });
+export default defineConfig({
+  markdown: { processor: unified({ remarkPlugins: [remarkReadingTime] }) },
+});
 ```
 
 ```astro

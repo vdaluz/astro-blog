@@ -4,6 +4,10 @@ All notable changes to this project are documented here. Format loosely follows 
 
 ## [Unreleased]
 
+### Changed
+
+- The README and the `remarkReadingTime` doc comment now register the plugin with `markdown: { processor: unified({ remarkPlugins: [remarkReadingTime] }) }` from `@astrojs/markdown-remark`, instead of the top-level `markdown.remarkPlugins` that Astro 7 deprecates and warns about on every check and build. Sites using this form add `@astrojs/markdown-remark` to their own dependencies. Docs only, no runtime change.
+
 ## [1.3.1] - 2026-09-27
 
 ### Fixed

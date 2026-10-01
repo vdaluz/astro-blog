@@ -28,10 +28,11 @@ function collectText(node: MdastNode, out: string[]) {
  * Remark plugin: counts words in the post body and writes the rounded-up
  * reading time (at 200 wpm) to `minutesRead` in the page's frontmatter.
  *
+ *   import { unified } from '@astrojs/markdown-remark';
  *   import { remarkReadingTime } from '@vdaluz/astro-blog/remark';
  *
  *   export default defineConfig({
- *     markdown: { remarkPlugins: [remarkReadingTime] },
+ *     markdown: { processor: unified({ remarkPlugins: [remarkReadingTime] }) },
  *   });
  */
 export function remarkReadingTime() {
