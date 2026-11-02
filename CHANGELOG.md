@@ -2,7 +2,11 @@
 
 All notable changes to this project are documented here. Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [1.4.0] - 2026-11-01
+
+### Added
+
+- `buildBlogPostingSchema` accepts an `image` option (`image` prop on `BlogPostMeta`): a fallback JSON-LD `image` used when the post has no `heroImage`, resolved against `siteUrl` like `heroImage`. Lets a site declare each post's generated OG card as its representative image. `heroImage` still takes precedence, so output is unchanged for sites that don't pass `image` (IPS-1383).
 
 ### Changed
 

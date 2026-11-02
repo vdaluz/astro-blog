@@ -62,6 +62,11 @@ export interface BlogPostingSchemaOptions {
    * engines to pick the wrong canonical form.
    */
   trailingSlash?: boolean;
+  /**
+   * Fallback representative image (absolute, or resolved against `siteUrl`), e.g. the
+   * post's generated OG card. Used only when the post has no `heroImage`.
+   */
+  image?: string;
 }
 
 /**
@@ -76,10 +81,12 @@ export function buildBlogPostingSchema({
   publisherName,
   locale,
   trailingSlash = false,
+  image,
 }: BlogPostingSchemaOptions) {
   const origin = normalizeBase(siteUrl);
   const postUrl = `${origin}${postHref(base ?? basePath ?? '/blog', post.id, trailingSlash)}`;
   const authorName = post.data.author || publisherName || '';
+  const imageSource = post.data.heroImage || image;
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -93,7 +100,7 @@ export function buildBlogPostingSchema({
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     // Points at the original file, not the .webp thumbnail PostCard/RelatedPosts render -
     // the original is the only file this package's own contract guarantees exists.
-    ...(post.data.heroImage ? { image: new URL(post.data.heroImage, `${origin}/`).href } : {}),
+    ...(imageSource ? { image: new URL(imageSource, `${origin}/`).href } : {}),
     ...(locale ? { inLanguage: locale } : {}),
   };
 }

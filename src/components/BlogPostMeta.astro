@@ -17,9 +17,11 @@ interface Props {
   locale?: Locale;
   /** Whether this site's canonical post URL ends in a trailing slash. Defaults to false. */
   trailingSlash?: boolean;
+  /** Fallback JSON-LD `image` (e.g. the post's OG card), used only when the post has no `heroImage`. */
+  image?: string;
 }
 
-const { post, siteUrl, base, basePath, publisherName, locale, trailingSlash } = Astro.props;
+const { post, siteUrl, base, basePath, publisherName, locale, trailingSlash, image } = Astro.props;
 const schema = buildBlogPostingSchema({
   post,
   siteUrl,
@@ -27,6 +29,7 @@ const schema = buildBlogPostingSchema({
   publisherName,
   locale,
   trailingSlash,
+  image,
 });
 ---
 

@@ -133,6 +133,33 @@ test('buildBlogPostingSchema resolves a heroImage missing its leading slash', ()
   assert.equal(schema.image, 'https://example.com/images/hero.png');
 });
 
+test('buildBlogPostingSchema falls back to the image option when heroImage is unset', () => {
+  const schema = buildBlogPostingSchema({
+    post: post(),
+    siteUrl: 'https://example.com',
+    image: '/og/blog/my-post.png',
+  });
+  assert.equal(schema.image, 'https://example.com/og/blog/my-post.png');
+});
+
+test('buildBlogPostingSchema prefers heroImage over the image option', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ heroImage: '/images/hero.png' }),
+    siteUrl: 'https://example.com',
+    image: '/og/blog/my-post.png',
+  });
+  assert.equal(schema.image, 'https://example.com/images/hero.png');
+});
+
+test('buildBlogPostingSchema passes an absolute image option through unchanged', () => {
+  const schema = buildBlogPostingSchema({
+    post: post(),
+    siteUrl: 'https://example.com/',
+    image: 'https://cdn.example/og.png',
+  });
+  assert.equal(schema.image, 'https://cdn.example/og.png');
+});
+
 test('buildBlogPostingSchema passes an absolute heroImage URL through unchanged', () => {
   const schema = buildBlogPostingSchema({
     post: post({ heroImage: 'https://cdn.example/x.jpg' }),
