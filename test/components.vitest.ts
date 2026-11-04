@@ -1,5 +1,6 @@
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { beforeAll, describe, expect, it } from 'vitest';
+import BlogPostMeta from '../src/components/BlogPostMeta.astro';
 import PostCard from '../src/components/PostCard.astro';
 import RelatedPosts from '../src/components/RelatedPosts.astro';
 import Pagination from '../src/components/Pagination.astro';
@@ -129,5 +130,31 @@ describe('TagFilterNav', () => {
     const current = anchorAttrs(html).filter((attrs) => attrs.includes('aria-current="page"'));
     expect(current).toHaveLength(1);
     expect(current[0]).toContain('href="/blog/tag/homelab"');
+  });
+});
+
+describe('BlogPostMeta', () => {
+  const siteUrl = 'https://example.com';
+  const jsonLd = (html: string) =>
+    JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1] ?? '{}');
+
+  it('passes author and publisher nodes through to the JSON-LD', async () => {
+    const organization = {
+      '@type': 'Organization',
+      '@id': 'https://example.com/#organization',
+      name: 'Example Inc',
+    };
+    const html = await container.renderToString(BlogPostMeta, {
+      props: { post, siteUrl, author: organization, publisher: organization },
+    });
+    expect(jsonLd(html).author).toEqual(organization);
+    expect(jsonLd(html).publisher).toEqual(organization);
+  });
+
+  it('builds a Person publisher when no node is passed', async () => {
+    const html = await container.renderToString(BlogPostMeta, {
+      props: { post, siteUrl, publisherName: 'Example Site' },
+    });
+    expect(jsonLd(html).publisher).toEqual({ '@type': 'Person', name: 'Example Site', url: siteUrl });
   });
 });

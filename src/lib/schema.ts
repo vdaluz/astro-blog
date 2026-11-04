@@ -40,6 +40,13 @@ export function blogSchema(opts: { defaultAuthor?: string } = {}) {
   });
 }
 
+/** A schema.org entity node, e.g. a site's Organization with its `@id` and `logo`. */
+export interface SchemaEntity {
+  '@type': string;
+  name: string;
+  [key: string]: unknown;
+}
+
 export interface BlogPostingSchemaOptions {
   post: BlogPostLike;
   /** Origin only, e.g. "https://imperfectsystems.com" (trailing slash tolerated). */
@@ -67,6 +74,13 @@ export interface BlogPostingSchemaOptions {
    * post's generated OG card. Used only when the post has no `heroImage`.
    */
   image?: string;
+  /** Emitted as given in place of the built `Person` author. */
+  author?: SchemaEntity;
+  /**
+   * Emitted as given in place of the built `Person` publisher, and takes over from
+   * `publisherName` as the fallback name for a post with no author.
+   */
+  publisher?: SchemaEntity;
 }
 
 /**
@@ -82,10 +96,14 @@ export function buildBlogPostingSchema({
   locale,
   trailingSlash = false,
   image,
+  author,
+  publisher,
 }: BlogPostingSchemaOptions) {
   const origin = normalizeBase(siteUrl);
   const postUrl = `${origin}${postHref(base ?? basePath ?? '/blog', post.id, trailingSlash)}`;
-  const authorName = post.data.author || publisherName || '';
+  const siteName = publisher?.name || publisherName;
+  const authorName = post.data.author || siteName || '';
+  const person = (name: string): SchemaEntity => ({ '@type': 'Person', name, url: origin });
   const imageSource = post.data.heroImage || image;
   return {
     '@context': 'https://schema.org',
@@ -94,8 +112,8 @@ export function buildBlogPostingSchema({
     description: post.data.description,
     datePublished: post.data.pubDate.toISOString(),
     dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
-    author: { '@type': 'Person', name: authorName, url: origin },
-    publisher: { '@type': 'Person', name: publisherName || authorName, url: origin },
+    author: author ?? person(authorName),
+    publisher: publisher ?? person(publisherName || authorName),
     url: postUrl,
     mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
     // Points at the original file, not the .webp thumbnail PostCard/RelatedPosts render -

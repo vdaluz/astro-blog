@@ -112,6 +112,21 @@ Set `updatedDate` in a post's frontmatter when you substantively edit it after p
 
 `buildBlogPostingSchema` sets the JSON-LD `image` field from the post's `heroImage`. For posts without one, pass a fallback with the `image` option (`image` prop on `BlogPostMeta`), typically the post's own OG card, e.g. `<BlogPostMeta ... image={`/og/blog/${slug}.png`} />`. A root-relative path resolves against `siteUrl`, and `heroImage` still wins when both are set.
 
+### JSON-LD author and publisher
+
+`buildBlogPostingSchema` describes the author and publisher as a `Person` by default. A site published by a company can pass full nodes with the `author` and `publisher` options (props on `BlogPostMeta`), which are emitted as given, including any `@id` or `logo`:
+
+```astro
+<BlogPostMeta
+  post={post}
+  siteUrl={siteUrl}
+  publisher={organization}
+  author={post.data.author === organization.name ? organization : undefined}
+/>
+```
+
+Each option is independent, so a post with a named human author can keep its `Person` author under an `Organization` publisher. A `publisher` node takes over from `publisherName` when both are set.
+
 ### Trailing slash
 
 Every URL-building surface in this package defaults to no trailing slash and accepts a `trailingSlash` prop/option to opt in: `BlogPostMeta` (JSON-LD's `url`/`mainEntityOfPage.@id`), `PostCard`, `RelatedPosts`, `Pagination` (every page link: numbered, first, previous, next and last, including page 1's own href), and `buildRssItems` (each item's `link`). If your site's actual canonical post URL is slash-terminated, pass `trailingSlash={true}` (or `{ trailingSlash: true }` for `buildRssItems`) to **every one of these** - passing it to only one (e.g. just `BlogPostMeta`) leaves the rest emitting slash-less URLs that disagree with JSON-LD and your page's own `<link rel="canonical">`, which can cause search engines to pick the wrong canonical form. Check your real canonical output before setting this, not just your app's `trailingSlash` config: prerendered routes on some hosts are served slash-terminated regardless of that config (confirm with `curl -sI` on a bare post URL - a `307`/`308` to the slash form means you need `trailingSlash={true}`).

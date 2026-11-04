@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.5.0] - 2026-11-04
+
+### Added
+
+- `buildBlogPostingSchema` accepts `author` and `publisher` options (props on `BlogPostMeta`): full schema.org nodes emitted as given in place of the built `Person`, so a site published by a company can declare an `Organization` with its `@id` and `logo`. New `SchemaEntity` type. Output is unchanged for sites that don't pass them (AST-123).
+
+### Changed
+
+- The JSON-LD `author` and `publisher` on `buildBlogPostingSchema`'s return type are now `SchemaEntity`, so `url` reads as `unknown` for TypeScript callers. Runtime output is unchanged.
+
 ## [1.4.0] - 2026-11-01
 
 ### Added

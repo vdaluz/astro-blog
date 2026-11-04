@@ -112,6 +112,55 @@ test('buildBlogPostingSchema publisher prefers publisherName over author when bo
   assert.equal(schema.publisher.name, 'Example Site');
 });
 
+const organization = {
+  '@type': 'Organization',
+  '@id': 'https://example.com/#organization',
+  name: 'Example Inc',
+  url: 'https://example.com/',
+  logo: 'https://example.com/logo.png',
+};
+
+test('buildBlogPostingSchema emits author and publisher nodes as given', () => {
+  const schema = buildBlogPostingSchema({
+    post: post(),
+    siteUrl: 'https://example.com',
+    publisherName: 'Ignored',
+    author: organization,
+    publisher: organization,
+  });
+  assert.deepEqual(schema.author, organization);
+  assert.deepEqual(schema.publisher, organization);
+});
+
+test('buildBlogPostingSchema keeps a Person author when only the publisher is overridden', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ author: 'Vic' }),
+    siteUrl: 'https://example.com',
+    publisher: organization,
+  });
+  assert.deepEqual(schema.author, { '@type': 'Person', name: 'Vic', url: 'https://example.com' });
+  assert.deepEqual(schema.publisher, organization);
+});
+
+test('buildBlogPostingSchema falls back an empty author to the publisher node name', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ author: '' }),
+    siteUrl: 'https://example.com',
+    publisher: organization,
+  });
+  assert.equal(schema.author.name, 'Example Inc');
+});
+
+test('buildBlogPostingSchema builds Person nodes when no override is passed', () => {
+  const schema = buildBlogPostingSchema({
+    post: post({ author: 'Vic' }),
+    siteUrl: 'https://example.com',
+    publisherName: 'Example Site',
+  });
+  assert.deepEqual(schema.author, { '@type': 'Person', name: 'Vic', url: 'https://example.com' });
+  assert.deepEqual(schema.publisher, { '@type': 'Person', name: 'Example Site', url: 'https://example.com' });
+});
+
 test('buildBlogPostingSchema omits image when heroImage is unset', () => {
   const schema = buildBlogPostingSchema({ post: post(), siteUrl: 'https://example.com' });
   assert.equal('image' in schema, false);

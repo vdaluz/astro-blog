@@ -1,5 +1,5 @@
 ---
-import { buildBlogPostingSchema, serializeForScriptTag } from '../lib/schema.ts';
+import { buildBlogPostingSchema, serializeForScriptTag, type SchemaEntity } from '../lib/schema.ts';
 import type { BlogPostLike } from '../lib/types.ts';
 import type { Locale } from '../lib/i18n.ts';
 
@@ -19,9 +19,13 @@ interface Props {
   trailingSlash?: boolean;
   /** Fallback JSON-LD `image` (e.g. the post's OG card), used only when the post has no `heroImage`. */
   image?: string;
+  /** JSON-LD author node, emitted as given in place of the built `Person`. */
+  author?: SchemaEntity;
+  /** JSON-LD publisher node, emitted as given in place of the built `Person`. */
+  publisher?: SchemaEntity;
 }
 
-const { post, siteUrl, base, basePath, publisherName, locale, trailingSlash, image } = Astro.props;
+const { post, siteUrl, base, basePath, publisherName, locale, trailingSlash, image, author, publisher } = Astro.props;
 const schema = buildBlogPostingSchema({
   post,
   siteUrl,
@@ -30,6 +34,8 @@ const schema = buildBlogPostingSchema({
   locale,
   trailingSlash,
   image,
+  author,
+  publisher,
 });
 ---
 
