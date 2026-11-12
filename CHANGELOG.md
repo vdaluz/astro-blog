@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here. Format loosely follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [1.5.1] - 2026-11-12
+
+### Changed
+
+- Adds the `seo` keyword so the package is listed under Performance + SEO in the Astro integrations library instead of Uncategorized. No code changes.
+
 ## [1.5.0] - 2026-11-04
 
 ### Added

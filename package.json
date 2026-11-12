@@ -1,6 +1,6 @@
 {
   "name": "@vdaluz/astro-blog",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Token-driven Astro blog components, related-posts scoring, a schema factory, and Shiki config - proven in production on vdaluz.com and imperfectsystems.com.",
   "keywords": [
     "astro",
@@ -10,7 +10,8 @@
     "related-posts",
     "rss",
     "shiki",
-    "json-ld"
+    "json-ld",
+    "seo"
   ],
   "homepage": "https://github.com/vdaluz/astro-blog#readme",
   "bugs": {
